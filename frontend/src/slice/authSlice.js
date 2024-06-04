@@ -16,7 +16,6 @@ const authSlice = createSlice({
         state.error = true; 
         SET_IS_USER(action.payload);
         SET_IS_LOGIN(true);
-        // localStorage.setItem("user", JSON.stringify(action.payload));
     },
     loginFailure: (state,action) => {
       state.isLogin = false;

@@ -26,7 +26,7 @@ const Products = () => {
   }, []);
 
   // Assuming cat is an array of categories
-  const cat = [ 'Home & Kitchen',"Electric"];
+  const cat = [ 'Home-Kitchen',"Electric"];
 
   const filterProductsByCategory = (category) => {
     return products.filter((product) => product.category === category);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axiosInstance from '../axios/instance';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,41 +13,70 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../css/Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import {logout} from '../slice/authSlice';
+import { logout } from '../slice/authSlice';
 import { useNavigate, NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
 
 const Header = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-    const user = useSelector((state) => state.auth.user);
-  console.log("heor",user);
+  const [email, setEmail] = useState("");
+  const [fullname, setFullname] = useState("");
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => {
+    if (user) {
+      setEmail(user.email);
+      setFullname(user.fullname);
+    }
+    setShow(true);
+  };
+
+  const user = useSelector((state) => state.auth.user);
+  const isLogin = useSelector((state) => state.auth.isLogin);
+
+  const itemsLenght = useSelector((state)=> state.cart.items);
+  console.log("leng",itemsLenght);
   const dispatch = useDispatch();
-  const handleLogout = () =>{
+
+  const handleLogout = () => {
     dispatch(logout());
     navigate("/");
-  }
-  const handleLogin = () =>{
-    navigate("/login");
-  }
-  const handleAdmin = ()=>{
-    navigate("/admin");
+  };
 
-  }
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const handleAdmin = () => {
+    navigate("/admin");
+  };
+
   const Categories = [
     { link: "Electronic" },
     { link: "Clothing" },
-    { link: "Home & Kitchen" },
-    { link: "Best Deals" },
-    { link: "Tv & Screens" },
+    { link: "Home-Kitchen" },
+    { link: "Tv Screens" },
     { link: "Smart Technology" },
-    { link: "Laptops & Accessories" },
+    { link: "Laptops Accessories" },
     { link: "Music Instruments" },
     { link: "Books" },
   ];
+
+  const handleProfileUpdate = async () => {
+    try {
+      const id = user._id
+      console.log("userID", id);
+      const response = await axiosInstance.patch(`/api/users/updateUserProfile?_id=${id}`, { email, fullname });
+      console.log("Profile updated", response.data);
+      handleClose();
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -55,35 +85,31 @@ const Header = () => {
             <StoreIcon style={{ fontSize: 32, color: "purple" }} />
             easyBuy
           </Navbar.Brand>
-          {/* <b className="text-center">Buy your easy from here</b> */}
           <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
               className="me-2"
               aria-label="Search"
-              />
-            <button className="btn text-white" style={{backgroundColor:"purple"}}>Search</button>
+            />
+            <button className="btn text-white" style={{ backgroundColor: "purple" }}>Search</button>
           </Form>
-          
-            <Nav className=" ms-auto center">
+          <Nav className="ms-auto center">
+            <Nav.Link>
+              {user && <h6 className="m-2">hello, {user.fullname}</h6>}
+            </Nav.Link>
             
-              <Nav.Link>{
-                user &&
-              <h6 className="m-2">hello, {user?.fullname}</h6>
-              }
-              
-              </Nav.Link>
-              <NavLink to="/cart">
-        <ShoppingCartIcon
-          id="icon-link"
-          className="mt-2"
-          style={{ fontSize: 32, color: "purple" }}
-        />
-      </NavLink>
-              {
-                user ? 
-                <NavDropdown
+            <NavLink to="/cart">
+          
+              <Badge badgeContent={itemsLenght.length} color="secondary">
+              <ShoppingCartIcon
+                id="icon-link"
+                className="mt-2"
+                style={{ fontSize: 32, color: "purple" }}
+              />              </Badge>
+            </NavLink>
+            {user ? (
+              <NavDropdown
                 title={
                   <>
                     <AccountCircleIcon
@@ -95,47 +121,36 @@ const Header = () => {
                 }
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item >
-                  
-                  <p onClick={handleShow}>
-                  Profile
-                  </p>
+                <NavDropdown.Item>
+                  <p onClick={handleShow}>Profile</p>
                 </NavDropdown.Item>
-                {
-                  user.role === "user"&&(
-                    <NavDropdown.Item >
-                  
-                  <p onClick={handleAdmin}>
-                  Admin portal
-                  </p>
-                </NavDropdown.Item>
-                  )
-                }
-                
+                {user.role === "user" && (
+                  <NavDropdown.Item>
+                    <p onClick={handleAdmin}>Admin portal</p>
+                  </NavDropdown.Item>
+                )}
                 <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-              </NavDropdown> :
+              </NavDropdown>
+            ) : (
               <NavDropdown
-              title={
-                <>
-                  <AccountCircleIcon
-                    id="icon-link"
-                    className="me-2"
-                    style={{ fontSize: 32, color: "purple" }}
-                  />
-                </>
-              }
-              id="basic-nav-dropdown"
-            >
-              <NavDropdown.Item onClick={handleLogin}>Login</NavDropdown.Item>
-            </NavDropdown>
-              }
-              
-            </Nav>
+                title={
+                  <>
+                    <AccountCircleIcon
+                      id="icon-link"
+                      className="me-2"
+                      style={{ fontSize: 32, color: "purple" }}
+                    />
+                  </>
+                }
+                id="basic-nav-dropdown"
+              >
+                <NavDropdown.Item onClick={handleLogin}>Login</NavDropdown.Item>
+              </NavDropdown>
+            )}
+          </Nav>
         </Container>
-   
       </Navbar>
-      <Container fluid>
-        <div className="horizontal-scroll-container">
+      <div  className="horizontal-scroll-container ">
           <Nav className="horizontal-navbar">
             {Categories.map((category, index) => (
               <Nav.Item key={index}>
@@ -149,29 +164,27 @@ const Header = () => {
               </Nav.Item>
             ))}
           </Nav>
-        </div>
-        </Container>
-
+      </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Update Profile</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form>
+          <Form>
             <Form.Group className="mb-3" controlId="profileFullName">
               <Form.Label>Full Name</Form.Label>
               <Form.Control
                 type="text"
-                value={user?.fullname}
-               
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="profileEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
-                value={user?.email}
-               
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -181,7 +194,7 @@ const Header = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={handleClose} style={{backgroundColor:"purple"}}>
+          <Button onClick={handleProfileUpdate} style={{ backgroundColor: "purple" }}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -189,4 +202,5 @@ const Header = () => {
     </>
   );
 };
+
 export default Header;

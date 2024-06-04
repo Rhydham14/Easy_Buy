@@ -297,8 +297,8 @@ const Admin = () => {
             >
               <MenuItem value="Electric">Electric</MenuItem>
               <MenuItem value="Clothing">Clothing</MenuItem>
-              <MenuItem value="Home & Kitchen">Home & Kitchen</MenuItem>
-              <MenuItem value="TV & Screen">TV & Screen</MenuItem>
+              <MenuItem value="Home-Kitchen">Home  Kitchen</MenuItem>
+              <MenuItem value="TV Screen">TV & Screen</MenuItem>
               <MenuItem value="Smart Technology">Smart Technology</MenuItem>
               <MenuItem value="Laptops & Accessories">Laptops & Accessories</MenuItem>
               <MenuItem value="Music Instruments">Music Instruments</MenuItem>

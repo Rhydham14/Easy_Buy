@@ -51,9 +51,9 @@ const ProductDetails = () => {
   return (
     <>
       <Header />
-      <Container maxWidth="xl" sx={{ pt: 2, minHeight: "100vh" }}>
+      <Container className="pt-5 h-25" maxWidth="xl" sx={{ pt: 2, minHeight: "100vh" }}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={6} className="text-center" id="detail-product">
+          <Grid item xs={12} md={6} className="text-center" >
             {details && (
               <>
                 <Box

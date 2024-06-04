@@ -70,6 +70,20 @@ const userController = {
       res.status(500).json({ error: "Internal server error" });
     }
   },
+  updateUserProfile: async (req, res) => {
+    try {
+      const userId = req.query;
+      console.log("backend ID", userId); // Assuming user ID is stored in req.user from authentication middleware
+      const updateData = req.body;
+      console.log("backend updateData", updateData); // Assuming user ID is stored in req.user from authentication middleware
+  
+      const updatedUser = await userService.updateUserProfile(updateData, userId);
+  
+      res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
 
 module.exports = userController;

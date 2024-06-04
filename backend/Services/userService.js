@@ -55,7 +55,48 @@ const userService = {
     } catch (e) {
       return { success: false, message: 'An error occurred', error: e };
     }
+  },
+
+updateUserProfile: async (updateData,userId) => {
+  try {
+    console.log("Service id", userId);
+    console.log("Service data", updateData);
+    
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        fullname: updateData.fullname,
+        email: updateData.email
+      },
+      { new: true, runValidators: true } // Returns the updated document and runs schema validators
+    );
+
+    console.log("Service user", updatedUser);
+    return updatedUser;
+  } catch (error) {
+    throw error;
   }
+},
+
+
+  // updateProduct: async(updataData)=>{
+  //   try{
+  //     const _id = updataData._id;
+  //     const updateData = await ProductModel.findByIdAndUpdate(
+  //       {_id},
+  //       {title:updataData.title,
+  //         description:updataData.description,
+  //         price:updataData.price,
+  //         category:updataData.category,
+  //         images:updataData.images
+  //       }
+  //     );
+  //     return updateData;
+  //   }catch(e){
+      
+  //   }
+  // },
+  
 };
 
 module.exports = userService;

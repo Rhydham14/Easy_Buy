@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../axios/instance";
 import "../css/Products.css";
@@ -11,6 +11,8 @@ const ProductPage = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
+  const [filterTitle, setFilterTitle] = useState("");
+  const [filterPrice, setFilterPrice] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,42 +31,98 @@ const ProductPage = () => {
     return products.filter((product) => product.category === category);
   };
 
+  const filteredProducts = filterProductsByCategory(category).filter((product) => {
+    return (
+      (filterTitle === "" || product.title.toLowerCase().includes(filterTitle.toLowerCase())) &&
+      (filterPrice === "" || product.price <= parseFloat(filterPrice))
+    );
+  });
+
+  const handleTitleChange = (e) => {
+    setFilterTitle(e.target.value);
+  };
+
+  const handlePriceChange = (e) => {
+    setFilterPrice(e.target.value);
+  };
+
+  const clearFilters = () => {
+    setFilterTitle("");
+    setFilterPrice("");
+  };
+
   if (error) {
     return <p>Error: {error}</p>;
   }
 
   return (
     <>
-          <Header />
-      <Container fluid style={{ backgroundColor: "rgba(128, 0, 128, 0.274)", overflowX: "auto" }}>
+      <Container fluid className="bg-light">
+        <Header />
         <Row>
-          <h1 className="text-center text-white mt-2" style={{ backgroundColor: "purple" }}>
-            {category} Products
-          </h1>
-          <Col className="text-center">
-            <h2 className="text-white">{category}</h2>
-            <Row className="flex-nowrap" style={{ overflowX: "auto" }}>
-              {filterProductsByCategory(category).slice(0, 10).map((product, productIndex) => (
-                <Col key={productIndex} xs={6} md={3} className="mb-4" style={{ maxWidth: "250px" }}>
-                  <div className="card" id="card-image" style={{ width: "100%", height:"100%" }}>
-                    <div className="card-body" style={{ height: "100%" }}>
-                      <Image src={product.images ? product.images : 'defaultImage.jpg'} fluid />
-                      <h5 className="card-title">{product.title}</h5>
-                      <p>{product.description}</p>
-                      <p>₹ {product.price}/-</p>
-                      <Link to={`/details/${product._id}`} className="btn text-white" style={{ backgroundColor: "purple" }}>
-                        More
-                      </Link>
-                    </div>
-                  </div>
-                </Col>
-              ))}
-            </Row>
+          <Col>
+            <h1 style={{backgroundColor:"purple", color:"white"}} className="text-center mt-2 py-3">
+              {category} Products
+            </h1>
           </Col>
+        </Row>
+        <Row className="justify-content-center mb-4">
+          <Col xs={12} sm={6} md={4} className="mb-2">
+            <Form.Group controlId="filterTitle">
+              <Form.Label>Filter by Title</Form.Label>
+              <Form.Control
+                type="text"
+                value={filterTitle}
+                onChange={handleTitleChange}
+                placeholder="Enter title"
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} sm={6} md={4} className="mb-2">
+            <Form.Group controlId="filterPrice">
+              <Form.Label>Filter by Price</Form.Label>
+              <Form.Control
+                type="number"
+                value={filterPrice}
+                onChange={handlePriceChange}
+                placeholder="Enter maximum price"
+              />
+            </Form.Group>
+          </Col>
+          <Col xs={12} className="text-center">
+            <Button variant="secondary" onClick={clearFilters}>
+              Clear Filters
+            </Button>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          {filteredProducts.map((product, index) => (
+            <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
+              <div className="card h-100">
+                <div className="card-body">
+                  <Image
+                    src={product.images ? product.images : "defaultImage.jpg"}
+                    fluid
+                    className="w-100"
+                    style={{ height: "200px", objectFit: "cover" }}
+                  />
+                  <h5 className="card-title mt-3">{product.title}</h5>
+                  <p className="card-text">{product.description}</p>
+                  <p className="card-text">₹ {product.price}/-</p>
+                  <Link
+                    to={`/details/${product._id}`}
+                    className="btn mt-auto"
+                    style={{backgroundColor:"purple", color:"white"}}
+                  >
+                    More
+                  </Link>
+                </div>
+              </div>
+            </Col>
+          ))}
         </Row>
       </Container>
       <Footer />
-
     </>
   );
 };

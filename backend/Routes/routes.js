@@ -5,9 +5,14 @@ const userController = require("../Controllers/userController");
 const productController = require("../Controllers/productController");
 const upload = require("../Middlewear/multer");
 
+//Users
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get("/verify/:userId/:token", userController.verifyEmail);
+router.patch("/updateUserProfile",userController.updateUserProfile);
+
+
+//Products
 router.post("/addProduct", upload.single('image'), productController.addProduct);
 router.get("/readProduct",  productController.readProduct);
 router.patch("/updateProduct",productController.updateProduct);
