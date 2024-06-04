@@ -1,0 +1,11 @@
+#icon-link:hover {
+    padding: 5%;
+  }
+  .horizontal-navbar {
+    display: flex;
+   justify-content: space-around;
+    background-color: #f8f9fa;
+    padding: 3px 0;
+    /* flex-wrap: nowrap; */
+
+  }
