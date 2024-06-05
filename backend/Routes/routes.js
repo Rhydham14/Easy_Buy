@@ -10,6 +10,7 @@ router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.get("/verify/:userId/:token", userController.verifyEmail);
 router.patch("/updateUserProfile",userController.updateUserProfile);
+router.post("/refresh", userController.refreshToken);
 
 
 //Products

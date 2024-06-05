@@ -22,6 +22,17 @@ const Admin = () => {
     image: null,
   });
 
+  const styles = {
+    truncatedDescription: {
+        display: '-webkit-box',
+        WebkitLineClamp: 3, /* Limit to 3 lines */
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'normal' /* Allow wrapping */
+    }
+};
+
   const handleOpen = () => {
     setEditMode(false);
     setNewProduct({
@@ -186,7 +197,7 @@ const Admin = () => {
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{product.title}</TableCell>
                     <TableCell>{product.price}</TableCell>
-                    <TableCell>{product.description}</TableCell>
+                    <TableCell style={styles.truncatedDescription}>{product.description}</TableCell>
                     <TableCell>{product.category}</TableCell>
                     <TableCell>
                       {product.images ? <img src={product.images} alt="No image" height={80} /> : "No image"}

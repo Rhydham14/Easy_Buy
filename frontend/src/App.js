@@ -9,7 +9,7 @@ import Verify from './component/Verify';
 import Cart from './component/Cart';
 import ProductPage from './component/Productpage';
 function App() {
-  console.log(typeof localStorage.getItem("isLogin"));
+  // console.log(typeof localStorage.getItem("isLogin"));
   return (
     <Router>
     <Routes>

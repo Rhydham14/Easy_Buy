@@ -36,7 +36,7 @@ const Header = () => {
   const user = useSelector((state) => state.auth.user);
 
   const itemsLenght = useSelector((state)=> state.cart.items);
-  console.log("leng",itemsLenght);
+  // console.log("leng",itemsLenght);
   const dispatch = useDispatch();
 
   const handleLogout = () => {

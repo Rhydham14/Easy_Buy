@@ -7,6 +7,26 @@ import Footer from "./Footer";
 import  {FETCH_PRODUCT_CATEGORY} from "../service/service";
 
 const ProductPage = () => {
+
+  const styles = {
+    truncatedDescription: {
+        display: '-webkit-box',
+        WebkitLineClamp: 3, /* Limit to 3 lines */
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'normal' /* Allow wrapping */
+    },
+    truncatedTitle:{
+      display: '-webkit-box',
+        WebkitLineClamp: 2, /* Limit to 3 lines */
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'normal' /* Allow wrapping */
+    }
+};
+
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
@@ -105,8 +125,8 @@ const ProductPage = () => {
                     className="w-100"
                     style={{ height: "200px", objectFit: "cover" }}
                   />
-                  <h5 className="card-title mt-3">{product.title}</h5>
-                  <p className="card-text">{product.description}</p>
+                  <h5 className="card-title mt-3" style={styles.truncatedTitle}>{product.title}</h5>
+                  <p className="card-text" style={styles.truncatedDescription}>{product.description}</p>
                   <p className="card-text">₹ {product.price}/-</p>
                   <Link
                     to={`/details/${product._id}`}

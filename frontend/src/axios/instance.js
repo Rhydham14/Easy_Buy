@@ -1,11 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// const axiosInstance = axios.create({
-//   baseURL: "https://tetime.onrender.com/"
-// });
-
-
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000/",
   headers: {
@@ -20,8 +15,6 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log("Reqqqq",config);
-
     return config;
   },
   (error) => {
@@ -32,7 +25,6 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("Res",response);
     if (response.data.token) {
       const newToken = response.data.token;
       localStorage.setItem("token", newToken);
@@ -42,37 +34,37 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     console.error("Response Interceptor Error:", error);
 
-    if (error.response && error.response.status === 401) {
+    const originalRequest = error.config;
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
       const refreshToken = localStorage.getItem("refreshToken");
 
       if (refreshToken) {
         try {
-          const refreshResponse = await axios.get(
-            "https://tetime.onrender.com/refresh/refreshtoken",
-            {
-              headers: { "refresh-token": refreshToken }
-            }
+          const refreshResponse = await axiosInstance.post(
+            "/refresh",
+            { token: refreshToken }
           );
 
-          const newToken = refreshResponse.data.token;
-          localStorage.setItem("token", newToken);
+          const { accessToken, refreshToken: newRefreshToken } = refreshResponse.data;
+          localStorage.setItem("token", accessToken);
+          localStorage.setItem("refreshToken", newRefreshToken);
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
-          // Retry the original request with the new token
-          error.config.headers.Authorization = `Bearer ${newToken}`;
-          return axiosInstance(error.config);
+          return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Error refreshing access token:", refreshError);
 
-          if (refreshError.response && refreshError.response.status === 401) {
-            // Redirect to login or handle token expiration
-            const navigate = useNavigate();
-            navigate("/home");
-          }
-
-          return Promise.reject(refreshError);
+          // If refreshing the token fails, redirect to login
+          const navigate = useNavigate();
+          navigate("/login");
         }
       } else {
         console.error("No refresh token available");
+
+        // No refresh token, redirect to login
+        const navigate = useNavigate();
+        navigate("/login");
       }
     }
 
