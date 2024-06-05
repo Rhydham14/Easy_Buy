@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import axiosInstance from "../axios/instance";
 import "../css/Products.css";
 import Header from "./Header";
 import Footer from "./Footer";
-import Home from "./Home";
+import  {FETCH_PRODUCT_CATEGORY} from "../service/service";
 
 const ProductPage = () => {
   const { category } = useParams();
@@ -17,8 +16,8 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/api/product/productPage?category=${category}`);
-        setProducts(response.data);
+        const fetchedProducts = await FETCH_PRODUCT_CATEGORY(category);
+        setProducts(fetchedProducts);
       } catch (error) {
         setError(error.message);
       }

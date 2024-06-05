@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/Login.css';
 import StoreIcon from "@mui/icons-material/Store";
-import axiosInstance from '../axios/instance';
+import {REGISTER_USER} from "../service/service";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -47,18 +47,17 @@ const Signup = () => {
       setErrorMessage("Passwords must match and be at least 8 characters long");
       return;
     }
-
     try {
-      const response = await axiosInstance.post("/api/users/register", data);
-      console.log("Response data:", response.data);
+      const response = await REGISTER_USER(data); // Call the service function and wait for the response
+      console.log("Response data:", response);
       setData({
         fullname: "",
         email: "",
         password: "",
         role: ""
       });
-      navigate("/Verify");
-    } catch (error) {
+      navigate("/Verify"); // Assuming navigate is a function to navigate to another page
+    }catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setErrorMessage(error.response.data.error);
       } else {

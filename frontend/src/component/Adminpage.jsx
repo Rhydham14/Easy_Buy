@@ -1,26 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from '../axios/instance';
 import {
-  Container,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Button,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Modal,
-  Box,
-  TextField,
-} from "@mui/material";
+  Container,Grid,Paper,Table,TableBody,TableCell,TableContainer,
+  TableHead,TableRow,Typography,Button,MenuItem,Select,InputLabel,
+  FormControl,Modal,Box,TextField,} from "@mui/material";
 import { useSelector } from "react-redux";
+import {ADD_PRODUCT,FETCH_DATA,UPDATE_PRODUCT} from "../service/service"
 
 const Admin = () => {
   const user = useSelector((state) => state.auth.user);
@@ -83,11 +67,7 @@ const Admin = () => {
     formData.append('image', newProduct.image);
 
     try {
-      const response = await axiosInstance.post("/api/product/addProduct", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await ADD_PRODUCT(formData); 
       const { message } = response.data;
       if (message) {
         setProducts((prev) => [...prev, newProduct]);
@@ -103,19 +83,14 @@ const Admin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/api/product/readProduct");
-        setProducts(response.data);
+        const data = await FETCH_DATA(); 
+        setProducts(data); 
       } catch (error) {
-        setError(error.message); // or you can customize error handling based on the error object
+        setError(error.message); 
       }
     };
 
     fetchData();
-
-    // Cleanup function (optional)
-    return () => {
-      // Any cleanup code goes here (if needed)
-    };
   }, []);
 
   const handleEditProduct = async () => {
@@ -127,18 +102,15 @@ const Admin = () => {
     formData.append('image', newProduct.image);
     console.log("title", newProduct.title);
     try {
-        await axiosInstance.patch(`/api/product/updateProduct?_id=${products[currentProductIndex]._id}`, {formData}, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const productId = products[currentProductIndex]._id;
+      await UPDATE_PRODUCT(productId, formData); 
 
       const updatedProducts = products.map((product, index) =>
         index === currentProductIndex ? newProduct : product
       );
       setProducts(updatedProducts);
-      handleClose();
-      
+      handleClose(); 
+
     } catch (error) {
       console.error("An error occurred. Please try again.", error);
     }

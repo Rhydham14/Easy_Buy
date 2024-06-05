@@ -6,11 +6,10 @@ import {
   Typography,
   Button,
   Box,
-  IconButton,
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-
+import {FETCH_PRODUCT_DETAILS} from "../service/service";
 import axiosInstance from "../axios/instance";
 import { useSelector, useDispatch } from "react-redux";
 import { addCart } from "../slice/cartSlice";
@@ -27,8 +26,8 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/api/product/details?_id=${_id}`);
-        setDetails(response.data);
+        const productDetails = await FETCH_PRODUCT_DETAILS(_id); // Call the service function and wait for the response
+        setDetails(productDetails);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -38,7 +37,7 @@ const ProductDetails = () => {
 
     // Cleanup function (optional)
     return () => {
-      // Any cleanup code goes here (if needed)
+      // Any cleanup logic if needed
     };
   }, [_id]);
 

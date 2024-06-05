@@ -1,8 +1,6 @@
 import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-// import Nav from "react-bootstrap/Nav";
-// import Navbar from "react-bootstrap/Navbar";
 import Corosel from "./Corosel";
 import Container from "react-bootstrap/Container";
 import Products from "./Products";

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import '../css/Login.css';
-import axiosInstance from '../axios/instance';
 import StoreIcon from "@mui/icons-material/Store";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../slice/authSlice";
+import {LOGIN_USER} from "../service/service";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,16 +16,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post("/api/users/login", { email, password });
-      console.log("*****",response.data);
-      const {success, message,user} = response.data;
+      const response = await LOGIN_USER(email, password); 
+      console.log("*****", response);
+      const { success, message, user } = response;
       if (success) {
         dispatch(loginSuccess(user));
         console.log(message);
-        navigate('/');  // Navigate to the home page or any other page after successful login
+        navigate('/');
       } else {
         setError(message);
-      
       }
     } catch (error) {
       dispatch(loginFailure(error.message));

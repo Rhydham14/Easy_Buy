@@ -19,7 +19,7 @@ import { removeFromCart, incrementItemQuantity, decrementItemQuantity } from "..
 import Header from "./Header";
 import Footer from "./Footer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.items);

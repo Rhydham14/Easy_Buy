@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import axiosInstance from '../axios/instance';
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -16,8 +15,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../slice/authSlice';
 import { useNavigate, NavLink } from "react-router-dom";
 import { Link } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
+import {UPDATE_USER_PROFILE} from "../service/service";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -35,7 +34,6 @@ const Header = () => {
   };
 
   const user = useSelector((state) => state.auth.user);
-  const isLogin = useSelector((state) => state.auth.isLogin);
 
   const itemsLenght = useSelector((state)=> state.cart.items);
   console.log("leng",itemsLenght);
@@ -67,10 +65,10 @@ const Header = () => {
 
   const handleProfileUpdate = async () => {
     try {
-      const id = user._id
+      const id = user._id;
       console.log("userID", id);
-      const response = await axiosInstance.patch(`/api/users/updateUserProfile?_id=${id}`, { email, fullname });
-      console.log("Profile updated", response.data);
+      const responseData = await UPDATE_USER_PROFILE(id, email, fullname); 
+      console.log("Profile updated", responseData);
       handleClose();
     } catch (e) {
       console.log("error", e);
@@ -100,13 +98,13 @@ const Header = () => {
             </Nav.Link>
             
             <NavLink to="/cart">
-          
               <Badge badgeContent={itemsLenght.length} color="secondary">
               <ShoppingCartIcon
                 id="icon-link"
                 className="mt-2"
                 style={{ fontSize: 32, color: "purple" }}
-              />              </Badge>
+              />
+              </Badge>
             </NavLink>
             {user ? (
               <NavDropdown

@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import "../css/Products.css";
-import axiosInstance from "../axios/instance";
-import { Navigate, Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import {FETCH_ALL_PRODUCT} from "../service/service";
 const Products = () => {
+
   const [error, setError] = useState(null);
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/api/product/readProduct");
-        setProducts(response.data);
+        const fetchedProducts = await FETCH_ALL_PRODUCT(); 
+        setProducts(fetchedProducts);
       } catch (error) {
-        setError(error.message); // or you can customize error handling based on the error object
+        setError(error.message); 
       }
     };
 
     fetchData();
 
-    // Cleanup function (optional)
-    return () => {
-      // Any cleanup code goes here (if needed)
-    };
+   
+    return;
   }, []);
 
   // Assuming cat is an array of categories
@@ -31,14 +30,6 @@ const Products = () => {
   const filterProductsByCategory = (category) => {
     return products.filter((product) => product.category === category);
   };
-
-  // const handleClick = async(_id)=>{
-  //   try {
-  //     navigate(`/details/$_id`);
-  //   } catch (error) {
-  //     setError(error.message); // or you can customize error handling based on the error object
-  //   }
-  // }
 
   return (
     <>
