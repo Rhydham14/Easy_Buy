@@ -17,6 +17,9 @@ export const REMOVE_IS_LOGIN = () =>localStorage.removeItem('user');
 export const SET_PRODUCT = (value)=>{
   localStorage.setItem("addProduct", JSON.stringify(value));
 }
+export const EMPTY_PRODUCT = ()=>{
+  localStorage.removeItem("addProduct");
+}
 export const GET_PRODUCT = JSON.parse(localStorage.getItem("addProduct"));
 
 export const REMOVE_PRODUCT = (id) => {
@@ -31,7 +34,6 @@ export const REMOVE_PRODUCT = (id) => {
 };
 
 export const ADD_PRODUCT = async (formData) => {
-  try {
     const response = await axiosInstance.post('/easyBuy.com/api/product/addProduct', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -39,85 +41,54 @@ export const ADD_PRODUCT = async (formData) => {
     });
     console.log("add p",response.data);
     return response.data; // Return the data from the response
-  } catch (error) {
-    console.log("error add p",error);
 
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const FETCH_DATA = async () => {
-  try {
     const response = await axiosInstance.get('/easyBuy.com/api/product/readProduct');
-    return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
+    return response.data; // Return the data from the respons
 };
 
 export const UPDATE_PRODUCT = async (productId, formData) => {
-  try {
     const response = await axiosInstance.patch(`/easyBuy.com/api/product/updateProduct?_id=${productId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const UPDATE_USER_PROFILE = async (userId, email, fullname) => {
-  try {
     const response = await axiosInstance.patch(`/easyBuy.com/api/users/updateUserProfile?_id=${userId}`, { email, fullname });
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const LOGIN_USER = async (email, password) => {
-  try {
     const response = await axiosInstance.post("/easyBuy.com/api/users/login", { email, password });
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const FETCH_PRODUCT_DETAILS = async (productId) => {
-  try {
     const response = await axiosInstance.get(`/easyBuy.com/api/product/details?_id=${productId}`);
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const FETCH_PRODUCT_CATEGORY = async (category) => {
-  try {
     const response = await axiosInstance.get(`/easyBuy.com/api/product/productPage?category=${category}`);
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const FETCH_ALL_PRODUCT = async () => {
-  try {
     const response = await axiosInstance.get("/easyBuy.com/api/product/readProduct");
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
 };
 
 export const REGISTER_USER = async (data) => {
-  try {
     const response = await axiosInstance.post("/easyBuy.com/api/users/register", data);
     return response.data; // Return the data from the response
-  } catch (error) {
-    throw error; // Propagate the error to be handled by the calling function
-  }
+};
+
+export const SEARCH = async (query) => { // Change parameter name to query
+  const response = await axiosInstance.post("/easyBuy.com/api/product/search", { query: query }); // Pass query to the request body
+  return response.data;
 };

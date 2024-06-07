@@ -1,6 +1,6 @@
 const ProductModel = require('../Models/productModel');
 
-addProduct = async({ title, description, price, category, images })=> {
+const addProduct = async({ title, description, price, category, images })=> {
   try {
     const newProduct = new ProductModel({
       title,
@@ -17,7 +17,7 @@ addProduct = async({ title, description, price, category, images })=> {
   }
 }
 
-readProduct = async()=> {
+const readProduct = async()=> {
   try {
     const productData = await ProductModel.find({});
     const data = productData.map((data) => {
@@ -36,7 +36,7 @@ readProduct = async()=> {
   }
 }
 
-updateProduct = async(updateData)=> {
+const updateProduct = async(updateData)=> {
   try {
     const _id = updateData._id;
     const updatedData = await ProductModel.findByIdAndUpdate(
@@ -55,7 +55,7 @@ updateProduct = async(updateData)=> {
   }
 }
 
-  details = async(_id)=> {
+const details = async(_id)=> {
   try {
     const productDetails = await ProductModel.findById(_id);
     return productDetails;
@@ -64,7 +64,7 @@ updateProduct = async(updateData)=> {
   }
 }
 
-  productPage = async(category)=> {
+const productPage = async(category)=> {
   try {
     const categoryData = await ProductModel.find({ category });
     return categoryData;
@@ -73,10 +73,23 @@ updateProduct = async(updateData)=> {
   }
 }
 
+const search = async (query) => {
+  const results = await ProductModel.find({
+    $or: [
+      { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for title
+      { description: { $regex: query, $options: 'i' } }, // Case-insensitive search for description
+      { price: query } // Exact match for price (if price is a string)
+    ]
+  }).select('title description price');
+  console.log("result", results);
+  return results;
+};
+
 module.exports = {
   addProduct,
   readProduct,
   updateProduct,
   details,
-  productPage
+  productPage,
+  search
 };

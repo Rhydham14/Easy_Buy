@@ -1,15 +1,15 @@
 const productService = require('../Services/productService'); // Import your productService module
 
-readProduct = async(req, res)=> {
+const readProduct = async(req, res)=> {
   try {
     const productData = await productService.readProduct();
     res.status(200).json(productData);
-  } catch (e) {
+  } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
 
-addProduct = async(req, res)=> {
+const addProduct = async(req, res)=> {
   try {
     const { title, description, price, category } = req.body;
     if (!req.file) {
@@ -30,7 +30,7 @@ addProduct = async(req, res)=> {
   }
 }
 
-updateProduct = async(req, res)=> {
+const updateProduct = async(req, res)=> {
   try {
     const { title, description, price, category, image } = req.body;
     const { _id } = req.query;
@@ -44,11 +44,11 @@ updateProduct = async(req, res)=> {
     });
     res.status(200).json({ message: "Product edit successfully" });
   } catch (e) {
-    res.status(500).json({ error: "Failed to edit product" });
+    res.status(500).json({ e: "Failed to edit product" });
   }
 }
 
-details = async(req, res)=> {
+const details = async(req, res)=> {
   try {
     const { _id } = req.query;
     const details = await productService.details(_id);
@@ -59,15 +59,27 @@ details = async(req, res)=> {
   }
 }
 
-productPage = async(req, res)=> {
+const productPage = async(req, res)=> {
   try {
     const { category } = req.query;
     const categoryData = await productService.productPage(category);
     res.status(200).json(categoryData);
-  } catch (error) {
+  } catch (e) {
     res.status(500).json({ error: "productPage error" });
   }
 }
+
+const search = async (req, res) => {
+  try {
+    const query = req.body.query;
+    console.log("search query:", query); // Log the search query for debugging
+    const searchData = await productService.search(query);
+    res.status(200).json(searchData);
+  } catch (e) {
+    console.error('Error searching:', e); // Log the error for debugging
+    res.status(500).json({ error: "searching error" });
+  }
+};
 
 module.exports = {
   readProduct,
@@ -75,4 +87,5 @@ module.exports = {
   updateProduct,
   details,
   productPage,
+  search
 };

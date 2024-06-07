@@ -12,17 +12,25 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../css/Header.css";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from '../slice/authSlice';
+import { logout, updateProfile } from "../slice/authSlice";
 import { useNavigate, NavLink } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Badge from "@mui/material/Badge";
-import {UPDATE_USER_PROFILE} from "../service/service";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { UPDATE_USER_PROFILE, SEARCH } from "../service/service";
 
 const Header = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -34,9 +42,7 @@ const Header = () => {
   };
 
   const user = useSelector((state) => state.auth.user);
-
-  const itemsLenght = useSelector((state)=> state.cart.items);
-  // console.log("leng",itemsLenght);
+  const itemsLenght = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -52,29 +58,45 @@ const Header = () => {
     navigate("/admin");
   };
 
-  const Categories = [
-    { link: "Electronic" },
-    { link: "Clothing" },
-    { link: "Home-Kitchen" },
-    { link: "Tv Screens" },
-    { link: "Smart Technology" },
-    { link: "Laptops Accessories" },
-    { link: "Music Instruments" },
-    { link: "Books" },
-  ];
-
   const handleProfileUpdate = async () => {
     try {
       const id = user._id;
       console.log("userID", id);
-      const responseData = await UPDATE_USER_PROFILE(id, email, fullname); 
-      console.log("Profile updated", responseData);
+      const responseData = await UPDATE_USER_PROFILE(id, email, fullname);
       handleClose();
+      dispatch(updateProfile(responseData.user));
+      setSnackbarMessage("Profile updated successfully");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
     } catch (e) {
       console.log("error", e);
+      setSnackbarMessage("Error updating profile");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
     }
   };
 
+  const handleSearch = async (query) => {
+    try {
+      setSearchQuery(query);
+      const response = await SEARCH(query); // Pass query to the SEARCH function
+      setSearchResults(response); // Assuming the API returns an array of search results
+    } catch (error) {
+      console.error("Error searching:", error);
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
+
+const cartValue = ()=>{
+  if(user){
+    return itemsLenght.length
+  }   else{
+     return 0;
+  } 
+}
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -83,29 +105,50 @@ const Header = () => {
             <StoreIcon style={{ fontSize: 32, color: "purple" }} />
             easyBuy
           </Navbar.Brand>
-          <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <button className="btn text-white" style={{ backgroundColor: "purple" }}>Search</button>
-          </Form>
+
+          {/* Search bar */}
+          <div style={{ flexGrow: 1, maxWidth: "600px", margin: "0 16px" }}>
+      <Autocomplete
+        freeSolo
+        options={searchResults.map((result) => result.title)}
+        onInputChange={(event, newInputValue) => {
+          handleSearch(newInputValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Search"
+            variant="outlined"
+            fullWidth
+            style={{ backgroundColor: "white", borderRadius: 4 }}
+          />
+        )}
+      />
+    </div>
+          {/* End Search bar */}
+
           <Nav className="ms-auto center">
             <Nav.Link>
               {user && <h6 className="m-2">hello, {user.fullname}</h6>}
             </Nav.Link>
-            
+
             <NavLink to="/cart">
-              <Badge badgeContent={itemsLenght.length} color="secondary">
-              <ShoppingCartIcon
-                id="icon-link"
-                className="mt-2"
-                style={{ fontSize: 32, color: "purple" }}
-              />
-              </Badge>
-            </NavLink>
+      {user ? (
+        <Badge badgeContent={cartValue()} color="secondary">
+          <ShoppingCartIcon
+            id="icon-link"
+            className="mt-2"
+            style={{ fontSize: 32, color: "purple" }}
+          />
+        </Badge>
+      ) : (
+        <ShoppingCartIcon
+          id="icon-link"
+          className="mt-2"
+          style={{ fontSize: 32, color: "purple" }}
+        />
+      )}
+    </NavLink>
             {user ? (
               <NavDropdown
                 title={
@@ -127,7 +170,9 @@ const Header = () => {
                     <p onClick={handleAdmin}>Admin portal</p>
                   </NavDropdown.Item>
                 )}
-                <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             ) : (
               <NavDropdown
@@ -148,21 +193,7 @@ const Header = () => {
           </Nav>
         </Container>
       </Navbar>
-      <div  className="horizontal-scroll-container ">
-          <Nav className="horizontal-navbar">
-            {Categories.map((category, index) => (
-              <Nav.Item key={index}>
-                <Nav.Link
-                  as={Link}
-                  to={`/pages/${category.link}`}
-                  id="categoury"
-                >
-                  {category.link}
-                </Nav.Link>
-              </Nav.Item>
-            ))}
-          </Nav>
-      </div>
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Update Profile</Modal.Title>
@@ -192,11 +223,29 @@ const Header = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={handleProfileUpdate} style={{ backgroundColor: "purple" }}>
+          <Button
+            onClick={handleProfileUpdate}
+            style={{ backgroundColor: "purple" }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <MuiAlert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+          style={{ backgroundColor: "purple", color: "white" }}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </>
   );
 };

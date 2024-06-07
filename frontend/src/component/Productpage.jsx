@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Form, Button, Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "../css/Products.css";
 import Header from "./Header";
 import Footer from "./Footer";
-import  {FETCH_PRODUCT_CATEGORY} from "../service/service";
+import { FETCH_PRODUCT_CATEGORY } from "../service/service";
+import Menu from "../component/Menu";
+import "../css/Loader.css";
 
 const ProductPage = () => {
-
   const styles = {
     truncatedDescription: {
-        display: '-webkit-box',
-        WebkitLineClamp: 3, /* Limit to 3 lines */
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'normal' /* Allow wrapping */
-    },
-    truncatedTitle:{
       display: '-webkit-box',
-        WebkitLineClamp: 2, /* Limit to 3 lines */
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'normal' /* Allow wrapping */
-    }
-};
+      WebkitLineClamp: 3, // Limit to 3 lines
+      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'normal', // Allow wrapping
+    },
+    truncatedTitle: {
+      display: '-webkit-box',
+      WebkitLineClamp: 2, // Limit to 3 lines
+      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'normal', // Allow wrapping
+    },
+  };
 
   const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [filterTitle, setFilterTitle] = useState("");
   const [filterPrice, setFilterPrice] = useState("");
+  const [loading, setLoading] = useState(true); // State to manage loading
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +42,8 @@ const ProductPage = () => {
         setProducts(fetchedProducts);
       } catch (error) {
         setError(error.message);
+      } finally {
+        setLoading(false); // Set loading to false after fetch completes
       }
     };
 
@@ -70,14 +74,24 @@ const ProductPage = () => {
     setFilterPrice("");
   };
 
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
+
   if (error) {
     return <p>Error: {error}</p>;
   }
-
   return (
     <>
       <Container fluid className="bg-light">
         <Header />
+        <Menu/>
         <Row>
           <Col>
             <h1 style={{backgroundColor:"purple", color:"white"}} className="text-center mt-2 py-3">
@@ -117,6 +131,7 @@ const ProductPage = () => {
         <Row className="justify-content-center">
           {filteredProducts.map((product, index) => (
             <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
+              <Link  to={`/details/${product._id}`}  style={{textDecoration:"none"}}>
               <div className="card h-100">
                 <div className="card-body">
                   <Image
@@ -137,6 +152,7 @@ const ProductPage = () => {
                   </Link>
                 </div>
               </div>
+              </Link>
             </Col>
           ))}
         </Row>

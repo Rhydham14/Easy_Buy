@@ -2,23 +2,18 @@ const User = require("../Models/userModel");
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt'); // Add bcrypt for password hashing
 
- register = async(userData)=> {
-  try {
+const register = async(userData)=> {
     const existingUser = await User.findOne({ email: userData.email });
     if (existingUser) {
       throw new Error('Email already in use');
     }
-
     // Create a new user with the plain text password
     const user = new User(userData);
     await user.save();
     return user;
-  } catch (e) {
-    throw e;
-  }
 }
 
-sendEmail = async(to, subject, text)=> {
+const sendEmail = async(to, subject, text)=> {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
@@ -37,7 +32,7 @@ sendEmail = async(to, subject, text)=> {
   await transporter.sendMail(mailOptions);
 }
 
-login = async(userData)=> {
+const login = async(userData)=> {
   try {
     const user = await User.findOne({ email: userData.email });
     if (user) {
@@ -56,8 +51,7 @@ login = async(userData)=> {
   }
 }
 
- updateUserProfile = async (updateData, userId) => {
-  try {
+const updateUserProfile = async (updateData, userId) => {
     console.log("Service id", userId);
     console.log("Service data", updateData);
     
@@ -72,9 +66,6 @@ login = async(userData)=> {
 
     console.log("Service user", updatedUser);
     return updatedUser;
-  } catch (error) {
-    throw error;
-  }
 }
 
 module.exports = {

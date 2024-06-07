@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  async (config) => {
+  async (config) => { 
     const token = localStorage.getItem("token");
 
     if (token) {

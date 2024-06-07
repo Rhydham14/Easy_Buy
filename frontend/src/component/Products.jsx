@@ -3,6 +3,7 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 import "../css/Products.css";
 import { Link } from "react-router-dom";
 import {FETCH_ALL_PRODUCT} from "../service/service";
+
 const Products = () => {
 
   const [error, setError] = useState(null);
@@ -33,6 +34,7 @@ const Products = () => {
 
   return (
     <>
+    
       <Container fluid style={{ backgroundColor: "rgba(128, 0, 128, 0.274)", overflowX: "auto" }}>
         <Row>
           <h1 className="text-center text-white mt-2" style={{ backgroundColor: "purple" }}>
@@ -43,8 +45,10 @@ const Products = () => {
               <h2 className="text-white">{category}</h2>
               <Row className="flex-nowrap" style={{ overflowX: "auto" }}> {/* Added overflowX: "auto" */}
                 {filterProductsByCategory(category).slice(0, 10).map((product, productIndex) => (
-                  <Col key={productIndex} xs={6} md={3} className="mb-4" style={{ maxWidth: "250px" }}> {/* Added style for fixed card width */}
-                    <div className="card" id="card-image" style={{ width: "100%", height:"100%" }}> {/* Added style for card width */}
+                  <Col key={productIndex} xs={6} md={3} className="mb-4" style={{ maxWidth: "250px" }}> 
+                  <Link to={`/details/${product._id}`} style={{textDecoration:"none"}}>
+                
+                    <div className="card"  id="card-image" style={{ width: "100%", height:"100%" }}> {/* Added style for card width */}
                       <div className="card-body" style={{height:"100%"}}>
                         <Image src={product.images ? product.images : 'defaultImage.jpg'} fluid />
                         <h5 className="card-title">{product.title}</h5>
@@ -56,6 +60,7 @@ const Products = () => {
                         </Link>
                       </div>
                     </div>
+                    </Link>
                   </Col>
                 ))}
               </Row>

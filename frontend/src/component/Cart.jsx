@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -11,17 +12,32 @@ import {
   CardActions,
   Box,
 } from "@mui/material";
+import "../css/Loader.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, incrementItemQuantity, decrementItemQuantity } from "../slice/cartSlice";
+import {
+  removeFromCart,
+  incrementItemQuantity,
+  decrementItemQuantity,
+} from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { NavLink } from "react-router-dom";
+import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
 
 const Cart = () => {
+  const [loading, setLoading] = useState(true); // State to manage loading
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Simulate loading time
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000); // Set to 1 second for demonstration
+  }, []);
+
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.isLogin);
@@ -42,7 +58,20 @@ const Cart = () => {
     console.log("Buying all items in the cart", cartItems);
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -120,7 +149,10 @@ const Cart = () => {
         ) : (
           <Container>
             <NavLink to="/login">
-              <Button className="btn" style={{ backgroundColor: "purple", color: "white" }}>
+              <Button
+                className="btn"
+                style={{ backgroundColor: "purple", color: "white" }}
+              >
                 Login Required
               </Button>
             </NavLink>

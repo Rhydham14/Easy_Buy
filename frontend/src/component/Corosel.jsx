@@ -11,7 +11,7 @@ const Corosel = () => {
   return (
     <>
       
-        <CustomCarousel>
+        <CustomCarousel  interval={1000}>
           <Carousel.Item>
             <img className="d-block w-100" src={image2} alt="First slide" />
           </Carousel.Item>

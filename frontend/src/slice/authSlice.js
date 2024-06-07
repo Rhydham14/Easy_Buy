@@ -1,4 +1,4 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import {GET_IS_LOGIN,GET_IS_USER,SET_IS_LOGIN, SET_IS_USER, REMOVE_IS_LOGIN, REMOVE_IS_USER} from '../service/service';
 const initialState={
     isLogin: GET_IS_LOGIN? GET_IS_LOGIN:false,
@@ -23,16 +23,23 @@ const authSlice = createSlice({
       state.user = null;
       SET_IS_LOGIN(false);
     },
-    logout:(state,action)=>{
+    logout:(state)=>{
         state.user = null;
         state.isLogin = null;
         state.error = null;
         REMOVE_IS_USER();
         REMOVE_IS_LOGIN();
     },
+    updateProfile:(state,action)=>{
+    state.isLogin = true;
+    state.user = action.payload;
+    SET_IS_USER(action.payload);
+
+
+    }
     
   }
 })
 
-export const { loginSuccess, loginFailure, logout,decrementItemQuantity,incrementItemQuantity } = authSlice.actions;
+export const { loginSuccess, loginFailure, logout,decrementItemQuantity,incrementItemQuantity, updateProfile } = authSlice.actions;
 export default authSlice.reducer;

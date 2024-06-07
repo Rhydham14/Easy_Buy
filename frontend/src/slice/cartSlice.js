@@ -1,5 +1,5 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit';
-import {SET_PRODUCT,GET_PRODUCT,REMOVE_PRODUCT} from "../service/service";
+import { createSlice} from '@reduxjs/toolkit';
+import {SET_PRODUCT,GET_PRODUCT,REMOVE_PRODUCT,EMPTY_PRODUCT} from "../service/service";
 const initialState={
   items: Array.isArray(GET_PRODUCT) ? GET_PRODUCT.map(item => ({ ...item, quantity: 1 })) : [],
     increment:0,
@@ -48,6 +48,9 @@ const cartSlice = createSlice({
           itemToUpdate.quantity -= 1;
         }
       },
+      emitCart: () =>{
+        EMPTY_PRODUCT();
+      }
     }
   })
   

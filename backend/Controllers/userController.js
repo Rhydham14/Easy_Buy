@@ -5,7 +5,7 @@ const Token = require("../Models/tokenModel");
 const jwtSerivce = require("../Services/jwtService");
 require('dotenv').config();
 
-register = async(req, res)=> {
+const register = async(req, res)=> {
   try {
     const { fullname, email, password, role } = req.body;
     const user = await userService.register({ fullname, email, password, role });
@@ -27,7 +27,7 @@ register = async(req, res)=> {
   }
 }
 
-verifyEmail = async(req, res)=> {
+const verifyEmail = async(req, res)=> {
   try {
     const { userId, token } = req.params;
     const tokenDoc = await Token.findOne({ userId, token });
@@ -43,7 +43,7 @@ verifyEmail = async(req, res)=> {
   }
 }
 
-login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const userData = await userService.login({ email, password });
@@ -68,7 +68,7 @@ login = async (req, res) => {
   }
 };
 
-updateUserProfile = async(req, res)=> {
+const updateUserProfile = async(req, res)=> {
   try {
     const userId = req.query;
     console.log("backend ID", userId); 
@@ -83,7 +83,7 @@ updateUserProfile = async(req, res)=> {
   }
 };
 
-refreshToken = async (req, res) => {
+const refreshToken = async (req, res) => {
   const refreshToken = req.body.token;
   if (!refreshToken) return res.status(401).json({ message: 'Refresh token is required' });
 

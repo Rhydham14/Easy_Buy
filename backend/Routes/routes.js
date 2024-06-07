@@ -19,7 +19,7 @@ router.get("/readProduct",  productController.readProduct);
 router.patch("/updateProduct",productController.updateProduct);
 router.get("/details", productController.details);
 router.get("/productPage",productController.productPage);
-
+router.post("/search",productController.search);
 
 module.exports = router;
     

@@ -9,18 +9,19 @@ import {
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import {FETCH_PRODUCT_DETAILS} from "../service/service";
-import axiosInstance from "../axios/instance";
-import { useSelector, useDispatch } from "react-redux";
+import { FETCH_PRODUCT_DETAILS } from "../service/service";
+import { useDispatch } from "react-redux";
 import { addCart } from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
-
+import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
+import "../css/Loader.css";
 import "../css/ProductDetails.css";
 
 const ProductDetails = () => {
   const { _id } = useParams();
   const [details, setDetails] = useState(null);
+  const [loading, setLoading] = useState(true); // State to manage loading
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,23 +31,28 @@ const ProductDetails = () => {
         setDetails(productDetails);
       } catch (error) {
         console.error("Error fetching product details:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetch completes
       }
     };
 
     fetchData();
-
-    // Cleanup function (optional)
-    return () => {
-      // Any cleanup logic if needed
-    };
   }, [_id]);
 
+  const handleCart = (details) => {
+    const { _id, title, price, images } = details;
+    dispatch(addCart({ _id, title, price, images }));
+  };
 
-  const handleCart = (details)=>{
-    const {_id, title, price, images} = details;
-    dispatch(addCart({_id, title, price,images}));
+  if (loading) {
+    return (
+      <div className="loader-container">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </div>
+    );
   }
-
   return (
     <>
       <Header />

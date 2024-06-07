@@ -5,7 +5,6 @@ const generateToken = (userId) => {
   const accessToken = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
   const refreshToken = jwt.sign({ userId }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
-  // Store the refresh token in the database
   const token = new Token({ userId, token: refreshToken });
   token.save();
 
