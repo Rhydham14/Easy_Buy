@@ -25,6 +25,7 @@ router.post("/search",productController.search);
 
 //Payment gatwaye
 router.post("/create-payment-intent",paymentController.createPayment)
-
+router.post("/paymentDetials",paymentController.paymentDetials);
+router.get("/showTransactions", paymentController.showTransactions);
 module.exports = router;
     

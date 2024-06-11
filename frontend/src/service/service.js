@@ -96,12 +96,8 @@ export const SEARCH = async (query) => {
 
 export const PAYMENT = async (totalPrice) => {
   try {
-    const response = await axios.post('http://localhost:5000/easyBuy.com/api/payment/create-payment-intent', {
+    const response = await axiosInstance.post('/easyBuy.com/api/payment/create-payment-intent', {
       amount: totalPrice * 100, // Convert to cents
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
 
     if (response.status !== 200) {
@@ -113,3 +109,26 @@ export const PAYMENT = async (totalPrice) => {
     throw new Error(error.message);
   }
 };
+
+export const PAYMENT_DETAILS = async (paymentIntent) => { // Accept paymentIntent as parameter
+  try {
+    const response = await axiosInstance.post('/easyBuy.com/api/payment/paymentDetials', {
+      paymentIntent, // Pass paymentIntent in the request body
+    });
+    console.log("Payment saved", response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to save payment:', error);
+    throw new Error(error.message); // Re-throw the error to handle it in the calling function
+  }
+};
+
+export const SHOW_TRANSACTIONS = async()=>{
+  try{
+    const response = await axiosInstance.get('/easyBuy.com/api/payment/showTransactions');
+    console.log("response",response.data);
+    return response.data;
+  }catch(error){
+    console.error("fail to show tansaction",error);
+  }
+}

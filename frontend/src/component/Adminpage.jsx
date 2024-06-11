@@ -3,10 +3,12 @@ import {
   Container, Grid, Paper, Card, CardHeader, CardContent, CardActions,
   Typography, Button, MenuItem, Select, InputLabel, FormControl, Modal, Box, TextField, Snackbar, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
 } from "@mui/material";
+import {  Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+
 import { useSelector } from "react-redux";
 import Pagination from "@mui/material/Pagination";
 import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
-import { ADD_PRODUCT, FETCH_DATA, UPDATE_PRODUCT } from "../service/service";
+import { ADD_PRODUCT, FETCH_DATA, UPDATE_PRODUCT, SHOW_TRANSACTIONS } from "../service/service";
 import "../css/Loader.css"; // Import loader CSS
 
 
@@ -24,7 +26,7 @@ const Admin = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [confirmationOpen, setConfirmationOpen] = useState(false); // Confirmation dialog state
   const [productToRemove, setProductToRemove] = useState(null); // Product to be removed
-
+  const [transactions, setTransaction] = useState(null);
   const [newProduct, setNewProduct] = useState({
     title: "",
     price: "",
@@ -120,6 +122,9 @@ const Admin = () => {
       try {
         const data = await FETCH_DATA();
         setProducts(data);
+        const tansaction = await SHOW_TRANSACTIONS();
+        console.log("tractions",tansaction);
+        setTransaction(tansaction);
       } catch (error) {
         setError("An error occurred while fetching the data."); // Set error message
       } finally {
@@ -259,6 +264,51 @@ const Admin = () => {
           />
         </Grid>
       </Grid>
+  
+      <Typography variant="h3" sx={{mt:2}}>Transaction Details</Typography>
+
+      <Card sx={{mt:2}}>
+  
+      <CardContent>
+       
+        {transactions.length > 0 ? (
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="right">Amount</TableCell>
+                  <TableCell align="right">Status</TableCell>
+                  <TableCell align="right">Currency</TableCell>
+                  <TableCell align="right">Created At</TableCell>
+                  <TableCell align="right">User ID</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell component="th" scope="row">
+                      {transaction.id}
+                    </TableCell>
+                    <TableCell align="right">{transaction.amount}</TableCell>
+                    <TableCell align="right">{transaction.status}</TableCell>
+                    <TableCell align="right">{transaction.currency}</TableCell>
+                    <TableCell align="right">{transaction.createdAt}</TableCell>
+                    <TableCell align="right">{transaction._id}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No transaction details available.
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+
+
       <Modal
       open={open}
       onClose={handleClose}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import {useParams, useNavigate} from "react-router-dom";
-import axios from 'axios';
+import { PAYMENT, PAYMENT_DETAILS } from "../service/service";
 
 const BuyNow = () => {
   const {totalPrice} = useParams();
@@ -15,11 +15,9 @@ const BuyNow = () => {
     // Fetch client secret from backend when component mounts or when totalPrice changes
     const fetchClientSecret = async (totalPrice) => {
       try {
-        const response = await axios.post('http://localhost:5000/easyBuy.com/api/payment/create-payment-intent', {
-          amount: totalPrice * 100, // Convert to cents
-        });
-
-        setClientSecret(response.data.clientSecret);
+        const response = await PAYMENT(totalPrice);
+        console.log("response",response.data);
+        setClientSecret(response.clientSecret);
       } catch (error) {
         console.error('Error fetching client secret:', error.message);
         setError('Failed to fetch client secret');
@@ -46,9 +44,14 @@ const BuyNow = () => {
       setError(error.message);
       setLoading(false);
     } else {
-      console.log('Payment successful', paymentIntent);
-      navigate("/PaymentSuccess");
-      setLoading(false);
+      try {
+        await PAYMENT_DETAILS(paymentIntent); // Pass paymentIntent
+        console.log('Payment successful', paymentIntent);
+        navigate("/PaymentSuccess");
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to load payment', error);
+      }
     }
   };
 
