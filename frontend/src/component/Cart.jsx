@@ -11,6 +11,7 @@ import {
   CardMedia,
   CardActions,
   Box,
+  Link,
 } from "@mui/material";
 import "../css/Loader.css";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -52,10 +53,6 @@ const Cart = () => {
 
   const handleDecrement = (_id) => {
     dispatch(decrementItemQuantity(_id));
-  };
-
-  const handleBuyNow = () => {
-    console.log("Buying all items in the cart", cartItems);
   };
 
   const totalPrice = cartItems.reduce(
@@ -135,20 +132,21 @@ const Cart = () => {
                 <Typography variant="h5" component="div" gutterBottom>
                   Total Price: ₹{totalPrice}
                 </Typography>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<ShoppingCartIcon />}
-                  onClick={handleBuyNow}
+                <NavLink
+                  as={Link}
+                  to={`/buynow/${totalPrice}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  Buy Now
-                </Button>
+                  <Button variant="contained" style={{ backgroundColor: "purple", color: "white", margin:"20px" }}>
+                    Buy Now
+                  </Button>
+                </NavLink>
               </Box>
             )}
           </>
         ) : (
           <Container>
-            <NavLink to="/login">
+            <NavLink as={Link} to="/login">
               <Button
                 className="btn"
                 style={{ backgroundColor: "purple", color: "white" }}

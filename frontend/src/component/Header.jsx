@@ -75,20 +75,27 @@ const Header = () => {
       setSnackbarOpen(true);
     }
   };
-
   const handleSearch = async (query) => {
     try {
       setSearchQuery(query);
-      const response = await SEARCH(query); // Pass query to the SEARCH function
-      setSearchResults(response); // Assuming the API returns an array of search results
+      const response = await SEARCH(query);
+      setSearchResults(response);
     } catch (error) {
-      console.error("Error searching:", error);
+      console.error('Error searching:', error);
     }
   };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   }
+
+
+  const handleResultClick = (event, value) => {
+    const selectedProduct = searchResults.find(result => result.title === value);
+    if (selectedProduct) {
+      navigate(`/details/${selectedProduct._id}`);
+    }
+  };  
 
 const cartValue = ()=>{
   if(user){
@@ -107,20 +114,21 @@ const cartValue = ()=>{
           </Navbar.Brand>
 
           {/* Search bar */}
-          <div style={{ flexGrow: 1, maxWidth: "600px", margin: "0 16px" }}>
+          <div style={{ flexGrow: 1, maxWidth: '600px', margin: '0 16px' }}>
       <Autocomplete
         freeSolo
-        options={searchResults.map((result) => result.title)}
+        options={searchResults.map(result => result.title)}
         onInputChange={(event, newInputValue) => {
           handleSearch(newInputValue);
         }}
+        onChange={handleResultClick}
         renderInput={(params) => (
           <TextField
             {...params}
             label="Search"
             variant="outlined"
             fullWidth
-            style={{ backgroundColor: "white", borderRadius: 4 }}
+            style={{ backgroundColor: 'white', borderRadius: 4 }}
           />
         )}
       />

@@ -75,6 +75,7 @@ const search = async (req, res) => {
     console.log("search query:", query); // Log the search query for debugging
     const searchData = await productService.search(query);
     res.status(200).json(searchData);
+    console.log("Searching result======================================================================", searchData);
   } catch (e) {
     console.error('Error searching:', e); // Log the error for debugging
     res.status(500).json({ error: "searching error" });

@@ -11,7 +11,8 @@ export const SET_IS_USER = (value)=>{
 }
 export const GET_IS_USER= JSON.parse(localStorage.getItem("user")); 
 
-export const REMOVE_IS_USER = () =>localStorage.removeItem('user');
+export const REMOVE_IS_USER = () => {localStorage.removeItem('user');
+console.log("Logout")}
 export const REMOVE_IS_LOGIN = () =>localStorage.removeItem('user');
 
 export const SET_PRODUCT = (value)=>{
@@ -88,7 +89,27 @@ export const REGISTER_USER = async (data) => {
     return response.data; // Return the data from the response
 };
 
-export const SEARCH = async (query) => { // Change parameter name to query
-  const response = await axiosInstance.post("/easyBuy.com/api/product/search", { query: query }); // Pass query to the request body
+export const SEARCH = async (query) => {
+  const response = await axiosInstance.post('/easyBuy.com/api/product/search', { query });
   return response.data;
+};
+
+export const PAYMENT = async (totalPrice) => {
+  try {
+    const response = await axios.post('http://localhost:5000/easyBuy.com/api/payment/create-payment-intent', {
+      amount: totalPrice * 100, // Convert to cents
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 200) {
+      throw new Error('Failed to fetch client secret');
+    }
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };

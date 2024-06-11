@@ -55,14 +55,14 @@ const updateProduct = async(updateData)=> {
   }
 }
 
-const details = async(_id)=> {
-  try {
-    const productDetails = await ProductModel.findById(_id);
-    return productDetails;
-  } catch (error) {
-    throw new Error('Failed to fetch product details: ' + error.message);
+  const details = async(_id)=> {
+    try {
+      const productDetails = await ProductModel.findById(_id);
+      return productDetails;
+    } catch (error) {
+      throw new Error('Failed to fetch product details: ' + error.message);
+    }
   }
-}
 
 const productPage = async(category)=> {
   try {
