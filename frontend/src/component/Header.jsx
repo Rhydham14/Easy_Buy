@@ -114,7 +114,7 @@ const cartValue = ()=>{
           </Navbar.Brand>
 
           {/* Search bar */}
-          <div style={{ flexGrow: 1, maxWidth: '600px', margin: '0 16px' }}>
+          <div style={{ flexGrow: 1, maxWidth: '400px', margin: '0 16px' }}>
       <Autocomplete
         freeSolo
         options={searchResults.map(result => result.title)}

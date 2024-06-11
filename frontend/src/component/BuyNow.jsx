@@ -1,42 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { PAYMENT } from '../service/service'; // Ensure the correct import path
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
+import axios from 'axios';
+
 const BuyNow = () => {
-  const totalPrice = useParams();
+  const {totalPrice} = useParams();
   const stripe = useStripe();
+  const navigate = useNavigate();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
-
   useEffect(() => {
     // Fetch client secret from backend when component mounts or when totalPrice changes
-    const fetchClientSecret = async () => {
+    const fetchClientSecret = async (totalPrice) => {
       try {
-        console.log("jheeee", totalPrice); 
-        const response = await fetch('http://localhost:5000/easyBuy.com/api/payment/create-payment-intent', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ amount: totalPrice * 100 }), // Convert to cents
+        const response = await axios.post('http://localhost:5000/easyBuy.com/api/payment/create-payment-intent', {
+          amount: totalPrice * 100, // Convert to cents
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch client secret');
-        }
-
-        const data = await response.json();
-        console.log("????????",data.clientSecret);
-        setClientSecret(data.clientSecret);
+        setClientSecret(response.data.clientSecret);
       } catch (error) {
         console.error('Error fetching client secret:', error.message);
         setError('Failed to fetch client secret');
       }
     };
 
-    fetchClientSecret();
+    if (totalPrice) {
+      fetchClientSecret(totalPrice); // Pass totalPrice to the function
+    }
   }, [totalPrice]);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,11 +42,12 @@ const BuyNow = () => {
     });
 
     if (error) {
-      debugger
+      
       setError(error.message);
       setLoading(false);
     } else {
       console.log('Payment successful', paymentIntent);
+      navigate("/PaymentSuccess");
       setLoading(false);
     }
   };

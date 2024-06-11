@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,NavLink } from "react-router-dom";
 import {
   Container,
   Grid,
   Typography,
   Button,
   Box,
+  Link
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
@@ -68,7 +69,13 @@ const ProductDetails = () => {
                   sx={{ width: "60%", maxWidth: "100%", height: "auto" }}
                 />
                 <Box>
-                  <Button
+                 
+                  <NavLink
+                  as={Link}
+                  to={`/buynow/${details.price}`}
+                  style={{ textDecoration: "none" }}
+                >
+               <Button
                     variant="contained"
                     color="primary"
                     startIcon={<LocalMallIcon />}
@@ -77,6 +84,7 @@ const ProductDetails = () => {
                   >
                     Buy now
                   </Button>
+                </NavLink>
                   <Button
                     variant="contained"
                     color="primary"
