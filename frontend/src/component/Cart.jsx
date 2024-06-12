@@ -80,53 +80,45 @@ const Cart = () => {
               Shopping Cart
             </Typography>
             <Grid container spacing={4}>
-              {cartItems.map((item) => (
-                <Grid item xs={12} md={6} lg={4} key={item._id}>
-                  <Card>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={item.images}
-                      alt={item.title}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.description}
-                      </Typography>
-                      <Typography variant="h6" component="div">
-                        ₹{item.price}
-                      </Typography>
-                      <Typography variant="body2" component="div">
-                        Quantity: {item.quantity}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => handleDecrement(item._id)}
-                      >
-                        <RemoveIcon />
-                      </IconButton>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => handleIncrement(item._id)}
-                      >
-                        <AddIcon />
-                      </IconButton>
-                      <IconButton
-                        color="secondary"
-                        onClick={() => handleRemoveItem(item._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+      {cartItems.map((item) => (
+        <Grid item xs={12} md={6} lg={4} key={item._id}>
+          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <CardMedia
+              component="img"
+              height="140"
+              image={item.images}
+              alt={item.title}
+              sx={{ objectFit: 'cover' }}
+            />
+            <CardContent sx={{ flexGrow: 1 }}>
+              <Typography gutterBottom variant="h5" component="div">
+                {item.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.description}
+              </Typography>
+              <Typography variant="h6" component="div">
+                ₹{item.price}
+              </Typography>
+              <Typography variant="body2" component="div">
+                Quantity: {item.quantity}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <IconButton color="secondary" onClick={() => handleDecrement(item._id)}>
+                <RemoveIcon />
+              </IconButton>
+              <IconButton color="secondary" onClick={() => handleIncrement(item._id)}>
+                <AddIcon />
+              </IconButton>
+              <IconButton color="secondary" onClick={() => handleRemoveItem(item._id)}>
+                <DeleteIcon />
+              </IconButton>
+            </CardActions>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
             {cartItems.length > 0 && (
               <Box sx={{ mt: 4, textAlign: "center" }}>
                 <Typography variant="h5" component="div" gutterBottom>

@@ -1,5 +1,7 @@
 // Import mongoose
 const mongoose = require('mongoose');
+const date = require('date-and-time') 
+
 
 // Define the Payment schema
 const paymentSchema = new mongoose.Schema({
@@ -23,6 +25,7 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Set default value to current date/time
   },
+
 });
 
 // Create the Payment model
