@@ -81,7 +81,7 @@ const search = async (query) => {
       { price: query } // Exact match for price (if price is a string)
     ]
   }).select('title description price');
-  console.log("result", results);
+  // console.log("result", results);
   return results;
 };
 

@@ -40,6 +40,8 @@ const Cart = () => {
   }, []);
 
   const cartItems = useSelector((state) => state.cart.items);
+  console.log("cartItems carttttttttttttttt", cartItems);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.isLogin);
 
@@ -55,10 +57,10 @@ const Cart = () => {
     dispatch(decrementItemQuantity(_id));
   };
 
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  // Check if cartItems is null or undefined before using reduce
+  const totalPrice = cartItems
+    ? cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    : 0;
 
   if (loading) {
     return (
@@ -80,46 +82,50 @@ const Cart = () => {
               Shopping Cart
             </Typography>
             <Grid container spacing={4}>
-      {cartItems.map((item) => (
-        <Grid item xs={12} md={6} lg={4} key={item._id}>
-          <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={item.images}
-              alt={item.title}
-              sx={{ objectFit: 'cover' }}
-            />
-            <CardContent sx={{ flexGrow: 1 }}>
-              <Typography gutterBottom variant="h5" component="div">
-                {item.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {item.description}
-              </Typography>
-              <Typography variant="h6" component="div">
-                ₹{item.price}
-              </Typography>
-              <Typography variant="body2" component="div">
-                Quantity: {item.quantity}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <IconButton color="secondary" onClick={() => handleDecrement(item._id)}>
-                <RemoveIcon />
-              </IconButton>
-              <IconButton color="secondary" onClick={() => handleIncrement(item._id)}>
-                <AddIcon />
-              </IconButton>
-              <IconButton color="secondary" onClick={() => handleRemoveItem(item._id)}>
-                <DeleteIcon />
-              </IconButton>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
-            {cartItems.length > 0 && (
+              {cartItems && cartItems.length > 0 ? (
+                cartItems.map((item) => (
+                  <Grid item xs={12} md={6} lg={4} key={item._id}>
+                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                      <CardMedia
+                        component="img"
+                        height="140"
+                        image={item.images}
+                        alt={item.title}
+                        sx={{ objectFit: 'cover' }}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {item.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {item.description}
+                        </Typography>
+                        <Typography variant="h6" component="div">
+                          ₹{item.price}
+                        </Typography>
+                        <Typography variant="body2" component="div">
+                          Quantity: {item.quantity}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <IconButton color="secondary" onClick={() => handleDecrement(item._id)}>
+                          <RemoveIcon />
+                        </IconButton>
+                        <IconButton color="secondary" onClick={() => handleIncrement(item._id)}>
+                          <AddIcon />
+                        </IconButton>
+                        <IconButton color="secondary" onClick={() => handleRemoveItem(item._id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                <Typography variant="h6" sx={{mt:5, ml:5}}>No items available</Typography>
+              )}
+            </Grid>
+            {cartItems && cartItems.length > 0 && (
               <Box sx={{ mt: 4, textAlign: "center" }}>
                 <Typography variant="h5" component="div" gutterBottom>
                   Total Price: ₹{totalPrice}
@@ -129,7 +135,7 @@ const Cart = () => {
                   to={`/buynow/${totalPrice}`}
                   style={{ textDecoration: "none" }}
                 >
-                  <Button variant="contained" style={{ backgroundColor: "purple", color: "white", margin:"20px" }}>
+                  <Button variant="contained" style={{ backgroundColor: "purple", color: "white", margin: "20px" }}>
                     Buy Now
                   </Button>
                 </NavLink>

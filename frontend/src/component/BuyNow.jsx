@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import {useParams, useNavigate} from "react-router-dom";
 import { PAYMENT, PAYMENT_DETAILS } from "../service/service";
-
+import { useSelector, useDispatch } from "react-redux";
+import {buyProduct} from "../slice/cartSlice";
 const BuyNow = () => {
   const {totalPrice} = useParams();
   const stripe = useStripe();
@@ -11,6 +12,8 @@ const BuyNow = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
+  const dispatch = useDispatch();
+
   useEffect(() => {
     // Fetch client secret from backend when component mounts or when totalPrice changes
     const fetchClientSecret = async (totalPrice) => {
@@ -47,6 +50,8 @@ const BuyNow = () => {
       try {
         await PAYMENT_DETAILS(paymentIntent); // Pass paymentIntent
         console.log('Payment successful', paymentIntent);
+        const paid = dispatch(buyProduct(paymentIntent.status))
+        console.log("paymentIntent",paid);
         navigate("/PaymentSuccess");
         setLoading(false);
       } catch (error) {

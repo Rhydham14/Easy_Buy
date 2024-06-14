@@ -19,7 +19,8 @@ export const SET_PRODUCT = (value)=>{
   localStorage.setItem("addProduct", JSON.stringify(value));
 }
 export const EMPTY_PRODUCT = ()=>{
-  localStorage.removeItem("addProduct");
+  const hh = localStorage.removeItem("addProduct");
+  console.log("prodcut removed",hh);
 }
 export const GET_PRODUCT = JSON.parse(localStorage.getItem("addProduct"));
 
@@ -34,6 +35,15 @@ export const REMOVE_PRODUCT = (id) => {
   localStorage.setItem("addProduct", JSON.stringify(products));
 };
 
+export const PAID_PAYMENT = (value)=>{
+  localStorage.setItem("status",JSON.stringify(value));
+}
+
+export const GOT_PAYMENT = () =>{
+   JSON.parse(localStorage.getItem("status"));
+}
+
+
 export const ADD_PRODUCT = async (formData) => {
     const response = await axiosInstance.post('/easyBuy.com/api/product/addProduct', formData, {
       headers: {
@@ -41,12 +51,13 @@ export const ADD_PRODUCT = async (formData) => {
       },
     });
     console.log("add p",response.data);
-    return response.data; // Return the data from the response
-
+    return response.data; // Return the data from the respon
 };
 
 export const FETCH_DATA = async () => {
     const response = await axiosInstance.get('/easyBuy.com/api/product/readProduct');
+    console.log("FETCH_DATA p",response.data);
+
     return response.data; // Return the data from the respons
 };
 

@@ -52,8 +52,8 @@ const login = async(userData)=> {
 }
 
 const updateUserProfile = async (updateData, userId) => {
-    console.log("Service id", userId);
-    console.log("Service data", updateData);
+    // console.log("Service id", userId);
+    // console.log("Service data", updateData);
     
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -64,7 +64,7 @@ const updateUserProfile = async (updateData, userId) => {
       { new: true, runValidators: true } // Returns the updated document and runs schema validators
     );
 
-    console.log("Service user", updatedUser);
+    // console.log("Service user", updatedUser);
     return updatedUser;
 }
 

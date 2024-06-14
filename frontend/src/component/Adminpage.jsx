@@ -135,6 +135,7 @@ const Admin = () => {
     try {
       const response = await ADD_PRODUCT(formData);
       const { message } = response.data;
+      console.log("response pf product", response.data);
       if (message) {
         setProducts((prev) => [...prev, newProduct]);
         setSnackbarOpen(true);
@@ -220,13 +221,7 @@ const Admin = () => {
 
   return (
     <>
-      <Navbar.Brand href="/" style={{ fontSize: 30,color: "purple"}}>
-            <StoreIcon style={{ fontSize: 40, color: "purple" }} />
-            easyBuy
-            <Typography variant="h3" align="center" color="balck" gutterBottom>
-          Welcome Admin
-        </Typography>
-          </Navbar.Brand>
+
 
       <Container
         maxWidth="xl"
@@ -237,7 +232,14 @@ const Admin = () => {
         }}
       >
      
-
+     <Navbar.Brand href="/" style={{ fontSize: 30,color: "purple"}}>
+            <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+            easyBuy
+            <Typography variant="h3" align="center" color="balck" gutterBottom>
+          Welcome Admin
+        </Typography>
+          </Navbar.Brand>
+          
         <Grid container spacing={4}>
           <Grid item xs={12}>
             <Typography variant="h3">Your Profile</Typography>

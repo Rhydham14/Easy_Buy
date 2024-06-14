@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Menu = () => {
     const Categories = [
-        { link: "Electronic" },
+        { link: "Electric" },
         { link: "Clothing" },
         { link: "Home-Kitchen" },
         { link: "Tv Screens" },
@@ -14,6 +14,7 @@ const Menu = () => {
         { link: "Laptops Accessories" },
         { link: "Music Instruments" },
         { link: "Books" },
+        
       ];
 
       // console.log("leng",itemsLenght);

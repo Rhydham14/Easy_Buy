@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../css/Header.css";
+import {buyProduct} from "../slice/cartSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, updateProfile } from "../slice/authSlice";
 import { useNavigate, NavLink } from "react-router-dom";
@@ -26,7 +27,7 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -44,6 +45,8 @@ const Header = () => {
   const user = useSelector((state) => state.auth.user);
   const itemsLenght = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+console.log("cartItems header",cartItems);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -89,7 +92,6 @@ const Header = () => {
     setSnackbarOpen(false);
   }
 
-
   const handleResultClick = (event, value) => {
     const selectedProduct = searchResults.find(result => result.title === value);
     if (selectedProduct) {
@@ -114,7 +116,7 @@ const cartValue = ()=>{
           </Navbar.Brand>
 
           {/* Search bar */}
-          <div style={{ flexGrow: 1, maxWidth: '400px', margin: '0 16px' }}>
+          <div style={{ flexGrow: 1, maxWidth: '300px', margin: '0 16px', maxHeight:'200px' } }>
       <Autocomplete
         freeSolo
         options={searchResults.map(result => result.title)}
@@ -128,7 +130,7 @@ const cartValue = ()=>{
             label="Search"
             variant="outlined"
             fullWidth
-            style={{ backgroundColor: 'white', borderRadius: 4 }}
+            style={{ backgroundColor: 'white', borderRadius: 4,}}
           />
         )}
       />
@@ -141,7 +143,7 @@ const cartValue = ()=>{
             </Nav.Link>
 
             <NavLink to="/cart">
-      {user ? (
+      {user && cartItems ? (
         <Badge badgeContent={cartValue()} color="secondary">
           <ShoppingCartIcon
             id="icon-link"
