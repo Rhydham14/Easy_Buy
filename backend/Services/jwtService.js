@@ -28,6 +28,7 @@ const verifyRefreshToken = async (token) => {
   } catch (error) {
     throw new Error('Invalid refresh token');
   }
-};
+}; 
+
 
 module.exports = { generateToken, verifyToken, verifyRefreshToken };

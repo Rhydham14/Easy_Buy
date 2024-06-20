@@ -5,8 +5,10 @@
 }
 
 #buyBtn:hover{
-    background-color:  rgb(83, 2, 83);
-    color: rgb(255, 255, 255);
+    border: solid  rgb(83, 2, 83);
+    /* color: rgb(255, 255, 255); */
+    background-color: white;
+    color: black;
 }
 
 #cartBtn:hover{
@@ -24,5 +26,7 @@
 }
 
 #buyBtn{
+    background-color: purple;
+    color: whitesmoke;
     border: solid purple;
 }

@@ -41,10 +41,12 @@ import {
   FETCH_DATA,
   UPDATE_PRODUCT,
   SHOW_TRANSACTIONS,
+  REMOVE_PRODUCT_DATA, // Import REMOVE_PRODUCT_DATA
 } from "../service/service";
 import "../css/Loader.css"; // Import loader CSS
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+
 const Admin = () => {
   const user = useSelector((state) => state.auth.user);
   const [open, setOpen] = useState(false);
@@ -66,7 +68,7 @@ const Admin = () => {
     image: null,
   });
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 8;
 
   const styles = {
     truncatedDescription: {
@@ -104,9 +106,7 @@ const Admin = () => {
   };
 
   const handleClose = () => setOpen(false);
-
   const handleSnackbarClose = () => setSnackbarOpen(false);
-
   const handleConfirmationClose = () => setConfirmationOpen(false);
 
   const handleChange = (e) => {
@@ -129,23 +129,23 @@ const Admin = () => {
     formData.append("title", newProduct.title);
     formData.append("price", newProduct.price);
     formData.append("description", newProduct.description);
-    formData.append("category", newProduct.category);
+    formData.append("category", newProduct.category); 
     formData.append("image", newProduct.image);
-
+  
     try {
       const response = await ADD_PRODUCT(formData);
-      const { message } = response.data;
-      console.log("response pf product", response.data);
-      if (message) {
+      console.log("Response data:", response.message);
+      // const { message } = response.data;
+      if (response && response.message) {
+        // Successful product addition
         setProducts((prev) => [...prev, newProduct]);
-        setSnackbarOpen(true);
+        setSnackbarOpen(true); // Display success snackbar
         handleClose();
       } else {
         console.error("Error adding product");
       }
     } catch (error) {
       console.error("An error occurred. Please try again.", error);
-      setError("An error occurred while adding the product. Please try again."); // Set error message
     }
   };
 
@@ -154,16 +154,14 @@ const Admin = () => {
       try {
         const data = await FETCH_DATA();
         setProducts(data);
-        const tansaction = await SHOW_TRANSACTIONS();
-        console.log("tractions", tansaction);
-        setTransaction(tansaction);
+        const transaction = await SHOW_TRANSACTIONS();
+        setTransaction(transaction);
       } catch (error) {
         setError("An error occurred while fetching the data."); // Set error message
       } finally {
         setLoading(false); // Set loading to false after fetch completes
       }
     };
-
     fetchData();
   }, []);
 
@@ -178,9 +176,8 @@ const Admin = () => {
     try {
       const productId = products[currentProductIndex]._id;
       await UPDATE_PRODUCT(productId, formData);
-
       const updatedProducts = products.map((product, index) =>
-        index === currentProductIndex ? newProduct : product
+        index === currentProductIndex ? { ...product, ...newProduct } : product
       );
       setProducts(updatedProducts);
       handleClose();
@@ -197,16 +194,24 @@ const Admin = () => {
     setConfirmationOpen(true);
   };
 
-  const handleRemoveProduct = () => {
-    setProducts((prev) => prev.filter((_, i) => i !== productToRemove));
-    setProductToRemove(null);
-    setConfirmationOpen(false);
+  const handleRemoveProduct = async () => {
+    try {
+      const productId = products[productToRemove]._id; // Get the product ID
+      await REMOVE_PRODUCT_DATA(productId); // Call the removal service
+      setProducts((prev) => prev.filter((_, i) => i !== productToRemove)); // Update the state
+      setProductToRemove(null);
+      setConfirmationOpen(false);
+    } catch (error) {
+      console.error("Failed to remove product", error);
+      setError(
+        "An error occurred while removing the product. Please try again."
+      );
+    }
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
@@ -221,8 +226,6 @@ const Admin = () => {
 
   return (
     <>
-
-
       <Container
         maxWidth="xl"
         sx={{
@@ -231,15 +234,14 @@ const Admin = () => {
           py: 4,
         }}
       >
-     
-     <Navbar.Brand href="/" style={{ fontSize: 30,color: "purple"}}>
-            <StoreIcon style={{ fontSize: 40, color: "purple" }} />
-            easyBuy
-            <Typography variant="h3" align="center" color="balck" gutterBottom>
-          Welcome Admin
-        </Typography>
-          </Navbar.Brand>
-          
+        <Navbar.Brand href="/" style={{ fontSize: 30, color: "purple" }}>
+          <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+          easyBuy
+          <Typography variant="h3" align="center" color="black" gutterBottom>
+            Welcome Admin
+          </Typography>
+        </Navbar.Brand>
+
         <Grid container spacing={4}>
           <Grid item xs={12}>
             <Typography variant="h3">Your Profile</Typography>
@@ -272,7 +274,8 @@ const Admin = () => {
                       height: "100%",
                     }}
                   >
-                    <CardHeader title={product.title} />
+                    <CardHeader title={product.title}  sx={{ overflow: "hidden",  height: 100,
+                          width: "100%"}}/>
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Box
                         component="img"
@@ -281,9 +284,10 @@ const Admin = () => {
                           width: "100%",
                           objectFit: "cover",
                           mb: 2,
+                          overflow: "hidden", // Add overflow hidden here
                         }}
                         src={product.images}
-                        alt={product.title}
+                        alt={product.title} // Add alt attribute here
                       />
                       <Typography
                         variant="body2"
@@ -343,7 +347,10 @@ const Admin = () => {
         <Card sx={{ mt: 2 }}>
           <CardContent>
             {transactions.length > 0 ? (
-              <TableContainer component={Paper}>
+              <TableContainer
+                component={Paper}
+                sx={{ maxHeight: 400, overflow: "auto" }}
+              >
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
@@ -458,9 +465,9 @@ const Admin = () => {
                 <MenuItem value="Home-Kitchen">Home Kitchen</MenuItem>
                 <MenuItem value="TV Screen">TV & Screen</MenuItem>
                 <MenuItem value="Smart Technology">Smart Technology</MenuItem>
-                <MenuItem value="Laptops & Accessories">
+                {/* <MenuItem value="Laptops & Accessories">
                   Laptops & Accessories
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem value="Music Instruments">Music Instruments</MenuItem>
                 <MenuItem value="Books">Books</MenuItem>
               </Select>

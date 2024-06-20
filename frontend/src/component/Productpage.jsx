@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Image, Form, Button, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Image,
+  Form,
+  Button,
+  Spinner,
+} from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import "../css/Products.css";
 import Header from "./Header";
@@ -11,20 +19,20 @@ import "../css/Loader.css";
 const ProductPage = () => {
   const styles = {
     truncatedDescription: {
-      display: '-webkit-box',
+      display: "-webkit-box",
       WebkitLineClamp: 3, // Limit to 3 lines
-      WebkitBoxOrient: 'vertical',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'normal', // Allow wrapping
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "normal", // Allow wrapping
     },
     truncatedTitle: {
-      display: '-webkit-box',
+      display: "-webkit-box",
       WebkitLineClamp: 2, // Limit to 3 lines
-      WebkitBoxOrient: 'vertical',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'normal', // Allow wrapping
+      WebkitBoxOrient: "vertical",
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "normal", // Allow wrapping
     },
   };
 
@@ -54,12 +62,15 @@ const ProductPage = () => {
     return products.filter((product) => product.category === category);
   };
 
-  const filteredProducts = filterProductsByCategory(category).filter((product) => {
-    return (
-      (filterTitle === "" || product.title.toLowerCase().includes(filterTitle.toLowerCase())) &&
-      (filterPrice === "" || product.price <= parseFloat(filterPrice))
-    );
-  });
+  const filteredProducts = filterProductsByCategory(category).filter(
+    (product) => {
+      return (
+        (filterTitle === "" ||
+          product.title.toLowerCase().includes(filterTitle.toLowerCase())) &&
+        (filterPrice === "" || product.price <= parseFloat(filterPrice))
+      );
+    }
+  );
 
   const handleTitleChange = (e) => {
     setFilterTitle(e.target.value);
@@ -91,14 +102,13 @@ const ProductPage = () => {
     <>
       <Container fluid className="bg-light">
         <Header />
-        <Menu/>
-        <Row>
-          <Col>
-            <h1 style={{backgroundColor:"purple", color:"white"}} className="text-center mt-2 py-3">
-              {category} Products
-            </h1>
-          </Col>
-        </Row>
+        <Menu />
+        <h1
+          style={{ backgroundColor: "purple", color: "white" }}
+          className="text-center mt-2 py-2"
+        >
+          {category} Products
+        </h1>
         <Row className="justify-content-center mb-4">
           <Col xs={12} sm={6} md={4} className="mb-2">
             <Form.Group controlId="filterTitle">
@@ -131,27 +141,40 @@ const ProductPage = () => {
         <Row className="justify-content-center">
           {filteredProducts.map((product, index) => (
             <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
-              <Link  to={`/details/${product._id}`}  style={{textDecoration:"none"}}>
-              <div className="card h-100">
-                <div className="card-body">
-                  <Image
-                    src={product.images ? product.images : "defaultImage.jpg"}
-                    fluid
-                    className="w-100"
-                    style={{ height: "200px", objectFit: "cover" }}
-                  />
-                  <h5 className="card-title mt-3" style={styles.truncatedTitle}>{product.title}</h5>
-                  <p className="card-text" style={styles.truncatedDescription}>{product.description}</p>
-                  <p className="card-text">₹ {product.price}/-</p>
-                  <Link
-                    to={`/details/${product._id}`}
-                    className="btn mt-auto"
-                    style={{backgroundColor:"purple", color:"white"}}
-                  >
-                    More
-                  </Link>
+              <Link
+                to={`/details/${product._id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <div className="card h-100">
+                  <div className="card-body">
+                    <Image
+                      src={product.images ? product.images : "defaultImage.jpg"}
+                      fluid
+                      className="w-100"
+                      style={{ height: "200px", objectFit: "cover" }}
+                    />
+                    <h5
+                      className="card-title mt-3"
+                      style={styles.truncatedTitle}
+                    >
+                      {product.title}
+                    </h5>
+                    <p
+                      className="card-text"
+                      style={styles.truncatedDescription}
+                    >
+                      {product.description}
+                    </p>
+                    <p className="card-text">₹ {product.price}/-</p>
+                    <Link
+                      to={`/details/${product._id}`}
+                      className="btn mt-auto"
+                      style={{ backgroundColor: "purple", color: "white" }}
+                    >
+                      More
+                    </Link>
+                  </div>
                 </div>
-              </div>
               </Link>
             </Col>
           ))}

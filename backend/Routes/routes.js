@@ -19,6 +19,7 @@ router.post("/refresh", userController.refreshToken);
 router.post("/addProduct", upload.single('image'), productController.addProduct);
 router.get("/readProduct",  productController.readProduct);
 router.patch("/updateProduct",productController.updateProduct);
+router.delete("/removeProduct",productController.removeProduct);
 router.get("/details", productController.details);
 router.get("/productPage",productController.productPage);
 router.post("/search",productController.search);

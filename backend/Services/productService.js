@@ -9,8 +9,9 @@ const addProduct = async({ title, description, price, category, images })=> {
       category,
       images
     });
-
+    
     await newProduct.save();
+    console.log("add data////////////",newProduct);
     return newProduct;
   } catch (error) {
     throw new Error('Failed to add product: ' + error.message);
@@ -31,6 +32,7 @@ const readProduct = async()=> {
       }
     })
     return data;
+
   } catch (error) {
     throw new Error('Failed to fetch product data: ' + error.message);
   }
@@ -52,6 +54,16 @@ const updateProduct = async(updateData)=> {
     return updatedData;
   } catch (error) {
     throw new Error('Failed to update product: ' + error.message);
+  }
+}
+
+const removeProduct = async(productId)=>{
+  try{
+    const _id = productId;
+    const removeProduct = await ProductModel.findByIdAndDelete(_id);
+    return removeProduct;
+  }catch(e){
+    throw new Error('Failed to error produc'+ e.message);
   }
 }
 
@@ -89,6 +101,7 @@ module.exports = {
   addProduct,
   readProduct,
   updateProduct,
+  removeProduct,
   details,
   productPage,
   search

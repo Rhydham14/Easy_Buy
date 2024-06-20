@@ -25,12 +25,12 @@ import {
 } from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
 
 const Cart = () => {
   const [loading, setLoading] = useState(true); // State to manage loading
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate loading time

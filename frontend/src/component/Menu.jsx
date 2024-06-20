@@ -9,9 +9,9 @@ const Menu = () => {
         { link: "Electric" },
         { link: "Clothing" },
         { link: "Home-Kitchen" },
-        { link: "Tv Screens" },
+        { link: "TV Screen" },
         { link: "Smart Technology" },
-        { link: "Laptops Accessories" },
+        // { link: "Laptops & Accessories" },
         { link: "Music Instruments" },
         { link: "Books" },
         

@@ -77,7 +77,6 @@ const ProductDetails = () => {
                 >
                <Button
                     variant="contained"
-                    color="primary"
                     startIcon={<LocalMallIcon />}
                     sx={{ m: 1 }}
                     id="buyBtn"
@@ -87,7 +86,6 @@ const ProductDetails = () => {
                 </NavLink>
                   <Button
                     variant="contained"
-                    color="primary"
                     startIcon={<ShoppingCartCheckoutIcon />}
                     sx={{ m: 1 }}
                     id="cartBtn"

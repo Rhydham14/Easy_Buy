@@ -24,7 +24,7 @@ const addProduct = async(req, res)=> {
       images,
     });
     res.status(200).json({ message: "Product added successfully" });
-  } catch (e) {
+  } catch (e) { 
     console.error(e);
     res.status(500).json({ message: "Failed to add product" });
   }
@@ -45,6 +45,18 @@ const updateProduct = async(req, res)=> {
     res.status(200).json({ message: "Product edit successfully" });
   } catch (e) {
     res.status(500).json({ e: "Failed to edit product" });
+  }
+}
+
+const removeProduct = async(req, res)=>{
+  try{
+    const {_id} = req.query;
+    console.log("reomve ppppppppp", _id);
+    await productService.removeProduct(_id);
+    res.status(200).json({message:"Product remove"});
+  }catch(e){
+    res.status(500).json({ e: "Failed to remove product" });
+
   }
 }
 
@@ -75,7 +87,6 @@ const search = async (req, res) => {
     console.log("search query:", query); // Log the search query for debugging
     const searchData = await productService.search(query);
     res.status(200).json(searchData);
-    console.log("Searching result======================================================================", searchData);
   } catch (e) {
     console.error('Error searching:', e); // Log the error for debugging  
     res.status(500).json({ error: "searching error" });
@@ -86,7 +97,9 @@ module.exports = {
   readProduct,
   addProduct,
   updateProduct,
+  removeProduct,
   details,
   productPage,
-  search
+  search,
+
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/Login.css';
 import StoreIcon from "@mui/icons-material/Store";
-import {REGISTER_USER} from "../service/service";
+import { REGISTER_USER } from "../service/service";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const Signup = () => {
     role: "user"
   });
   const [errorMessage, setErrorMessage] = useState(""); // State for error message
+  const [loading, setLoading] = useState(false); // State for loading indicator
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -47,6 +48,9 @@ const Signup = () => {
       setErrorMessage("Passwords must match and be at least 8 characters long");
       return;
     }
+
+    setLoading(true); // Show loader
+
     try {
       const response = await REGISTER_USER(data); // Call the service function and wait for the response
       console.log("Response data:", response);
@@ -56,14 +60,16 @@ const Signup = () => {
         password: "",
         role: ""
       });
-      navigate("/Verify"); // Assuming navigate is a function to navigate to another page
-    }catch (error) {
+      navigate("/Verify"); // Navigate to another page on successful registration
+    } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setErrorMessage(error.response.data.error);
       } else {
         setErrorMessage("An unexpected error occurred. Please try again later.");
       }
       console.error("Error submitting data:", error);
+    } finally {
+      setLoading(false); // Hide loader whether success or error
     }
   };
 
@@ -132,12 +138,12 @@ const Signup = () => {
               />
             </div>
             {!valid && cpswd && (
-              <div className="alert alert-danger mt-2"  role="alert">
+              <div className="alert alert-danger mt-2" role="alert">
                 Passwords must match and be at least 8 characters long
               </div>
             )}
             {errorMessage && (
-              <div className="alert alert-danger  mt-2" role="alert">
+              <div className="alert alert-danger mt-2" role="alert">
                 {errorMessage}
               </div>
             )}

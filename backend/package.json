@@ -23,6 +23,7 @@
     "crypto-js": "^4.2.0",
     "date-and-time": "^3.3.0",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
