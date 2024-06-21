@@ -4,7 +4,6 @@ import {
   GET_PRODUCT,
   REMOVE_PRODUCT,
   EMPTY_PRODUCT,
-  PAID_PAYMENT,
 } from "../service/service";
 const initialState = {
   items: Array.isArray(GET_PRODUCT)
@@ -21,17 +20,13 @@ const cartSlice = createSlice({
       const existingItem = state.items.find((item) => item._id === _id);
 
       if (existingItem) {
-        // If the item already exists in the cart, increment its quantity
         existingItem.quantity++;
       } else {
-        // If the item is not in the cart, add it with a quantity of 1
         state.items.push({ _id, title, price, images, quantity: 1 });
       }
 
-      // Update the total count of items in the cart
       state.increment = state.items.length;
 
-      // Update the product data in the service
       SET_PRODUCT(state.items);
     },
 
@@ -44,7 +39,6 @@ const cartSlice = createSlice({
       const itemId = action.payload;
       const itemToUpdate = state.items.find((item) => item._id === itemId);
       if (itemToUpdate) {
-        // Increment quantity
         itemToUpdate.quantity = (itemToUpdate.quantity || 1) + 1;
       }
     },
@@ -52,7 +46,6 @@ const cartSlice = createSlice({
       const itemId = action.payload;
       const itemToUpdate = state.items.find((item) => item._id === itemId);
       if (itemToUpdate && itemToUpdate.quantity > 1) {
-        // Decrement quantity
         itemToUpdate.quantity -= 1;
       }
     },
@@ -62,9 +55,8 @@ const cartSlice = createSlice({
     buyProduct: (state, action) => {
       const status = action.payload;
       console.log("redus status", status);
-      if(status === 'succeeded'){
+      if (status === "succeeded") {
         EMPTY_PRODUCT();
-
       }
     },
   },

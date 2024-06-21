@@ -1,25 +1,20 @@
 .horizontal-navbar {
-    display: flex;
-    /* justify-content: space-around; or space-between, flex-start, center, etc. */
-    background-color: #f8f9fa;
-    padding: 3px 0;
-    flex-wrap: nowrap;
+  display: flex;
+  background-color: #f8f9fa;
+  padding: 3px 0;
+  flex-wrap: nowrap;
+}
 
-  }
+#categoury {
+  color: black;
+  margin: 2%;
+}
+#categoury:hover {
+  color: whitesmoke;
+  background-color: rgba(128, 0, 128, 0.897);
+}
 
-  #categoury{
-    color: black;
-    margin: 2%;
-  }  
-  #categoury:hover{
-    /* color:#800080;
-    /* font-size: medium; */
-    color: whitesmoke;
-    background-color: rgba(128, 0, 128, 0.897);
-  }
-
-  .horizontal-scroll-container {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  
+.horizontal-scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}

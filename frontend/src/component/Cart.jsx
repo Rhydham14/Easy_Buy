@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Container,
   Grid,
@@ -25,18 +25,14 @@ import {
 } from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
-// import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
-
+import Spinner from "react-bootstrap/Spinner";
 const Cart = () => {
-  const [loading, setLoading] = useState(true); // State to manage loading
-  // const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading time
     setTimeout(() => {
       setLoading(false);
-    }, 1000); // Set to 1 second for demonstration
+    }, 1000);
   }, []);
 
   const cartItems = useSelector((state) => state.cart.items);
@@ -57,7 +53,6 @@ const Cart = () => {
     dispatch(decrementItemQuantity(_id));
   };
 
-  // Check if cartItems is null or undefined before using reduce
   const totalPrice = cartItems
     ? cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
     : 0;
@@ -85,13 +80,19 @@ const Cart = () => {
               {cartItems && cartItems.length > 0 ? (
                 cartItems.map((item) => (
                   <Grid item xs={12} md={6} lg={4} key={item._id}>
-                    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                    <Card
+                      sx={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
                       <CardMedia
                         component="img"
                         height="140"
                         image={item.images}
                         alt={item.title}
-                        sx={{ objectFit: 'cover' }}
+                        sx={{ objectFit: "cover" }}
                       />
                       <CardContent sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant="h5" component="div">
@@ -108,13 +109,22 @@ const Cart = () => {
                         </Typography>
                       </CardContent>
                       <CardActions>
-                        <IconButton color="secondary" onClick={() => handleDecrement(item._id)}>
+                        <IconButton
+                          color="secondary"
+                          onClick={() => handleDecrement(item._id)}
+                        >
                           <RemoveIcon />
                         </IconButton>
-                        <IconButton color="secondary" onClick={() => handleIncrement(item._id)}>
+                        <IconButton
+                          color="secondary"
+                          onClick={() => handleIncrement(item._id)}
+                        >
                           <AddIcon />
                         </IconButton>
-                        <IconButton color="secondary" onClick={() => handleRemoveItem(item._id)}>
+                        <IconButton
+                          color="secondary"
+                          onClick={() => handleRemoveItem(item._id)}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </CardActions>
@@ -122,7 +132,9 @@ const Cart = () => {
                   </Grid>
                 ))
               ) : (
-                <Typography variant="h6" sx={{mt:5, ml:5}}>No items available</Typography>
+                <Typography variant="h6" sx={{ mt: 5, ml: 5 }}>
+                  No items available
+                </Typography>
               )}
             </Grid>
             {cartItems && cartItems.length > 0 && (
@@ -135,7 +147,14 @@ const Cart = () => {
                   to={`/buynow/${totalPrice}`}
                   style={{ textDecoration: "none" }}
                 >
-                  <Button variant="contained" style={{ backgroundColor: "purple", color: "white", margin: "20px" }}>
+                  <Button
+                    variant="contained"
+                    style={{
+                      backgroundColor: "purple",
+                      color: "white",
+                      margin: "20px",
+                    }}
+                  >
                     Buy Now
                   </Button>
                 </NavLink>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '../css/Login.css';
+import "../css/Login.css";
 import StoreIcon from "@mui/icons-material/Store";
 import { REGISTER_USER } from "../service/service";
 
@@ -13,10 +13,10 @@ const Signup = () => {
     fullname: "",
     email: "",
     password: "",
-    role: "user"
+    role: "user",
   });
-  const [errorMessage, setErrorMessage] = useState(""); // State for error message
-  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,41 +42,44 @@ const Signup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMessage(""); // Reset error message
+    setErrorMessage("");
 
     if (!valid) {
       setErrorMessage("Passwords must match and be at least 8 characters long");
       return;
     }
 
-    setLoading(true); // Show loader
+    setLoading(true);
 
     try {
-      const response = await REGISTER_USER(data); // Call the service function and wait for the response
+      const response = await REGISTER_USER(data);
       console.log("Response data:", response);
       setData({
         fullname: "",
         email: "",
         password: "",
-        role: ""
+        role: "",
       });
-      navigate("/Verify"); // Navigate to another page on successful registration
+      navigate("/Verify");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setErrorMessage(error.response.data.error);
       } else {
-        setErrorMessage("An unexpected error occurred. Please try again later.");
+        setErrorMessage(
+          "An unexpected error occurred. Please try again later."
+        );
       }
       console.error("Error submitting data:", error);
     } finally {
-      setLoading(false); // Hide loader whether success or error
+      setLoading(false);
     }
   };
 
   return (
     <div className="container-fluid">
       <h1 className="text-center">
-        <StoreIcon style={{ fontSize: 40, color: "purple" }} />easyBuy
+        <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+        easyBuy
       </h1>
       <div className="row mx-auto d-flex justify-content-center">
         <div className="col-sm-12 p-5 mx-auto" id="text">
@@ -109,7 +112,9 @@ const Signup = () => {
                 onChange={handleChange}
                 required
               />
-              <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+              <small className="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -147,7 +152,11 @@ const Signup = () => {
                 {errorMessage}
               </div>
             )}
-            <button type="submit" className="btn text-white mt-2" style={{ backgroundColor: 'purple' }}>
+            <button
+              type="submit"
+              className="btn text-white mt-2"
+              style={{ backgroundColor: "purple" }}
+            >
               Signup
             </button>
           </form>

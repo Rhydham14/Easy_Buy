@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import '../css/Login.css';
+import "../css/Login.css";
 import StoreIcon from "@mui/icons-material/Store";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../slice/authSlice";
@@ -22,7 +22,7 @@ const Login = () => {
         dispatch(loginSuccess(user));
         localStorage.setItem("token", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        navigate('/');
+        navigate("/");
       } else {
         setError(message);
       }
@@ -56,7 +56,9 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-              <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+              <small className="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
@@ -72,10 +74,16 @@ const Login = () => {
               />
             </div>
             {error && <div className="alert alert-danger">{error}</div>}
-            <button type="submit" className="btn text-white mt-2" style={{ backgroundColor: 'purple' }}>
+            <button
+              type="submit"
+              className="btn text-white mt-2"
+              style={{ backgroundColor: "purple" }}
+            >
               Submit
             </button>
-            <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
+            <p>
+              Don't have an account? <Link to="/signup">Sign up</Link>
+            </p>
           </form>
         </div>
       </div>

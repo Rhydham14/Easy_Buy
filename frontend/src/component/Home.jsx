@@ -7,12 +7,11 @@ import Container from "react-bootstrap/Container";
 import Products from "./Products";
 import "../css/Home.css";
 import Ads from "./Ads";
-import "../css/Loader.css"
+import "../css/Loader.css";
 import Menu from "../component/Menu";
-import Spinner from "react-bootstrap/Spinner";  // Import Bootstrap Spinner
-
+import Spinner from "react-bootstrap/Spinner";
 const Home = () => {
-  const [loading, setLoading] = useState(true); // State to manage loading
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +19,7 @@ const Home = () => {
     if (!token) {
       navigate("/login");
     } else {
-      setLoading(false); // Hide loader after token check
+      setLoading(false);
     }
   }, [navigate]);
 
@@ -37,7 +36,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Menu/>
+      <Menu />
       <Container fluid>
         <Corosel />
         <Ads />

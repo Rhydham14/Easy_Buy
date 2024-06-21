@@ -20,19 +20,19 @@ const ProductPage = () => {
   const styles = {
     truncatedDescription: {
       display: "-webkit-box",
-      WebkitLineClamp: 3, // Limit to 3 lines
+      WebkitLineClamp: 3,
       WebkitBoxOrient: "vertical",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "normal", // Allow wrapping
+      whiteSpace: "normal", 
     },
     truncatedTitle: {
       display: "-webkit-box",
-      WebkitLineClamp: 2, // Limit to 3 lines
+      WebkitLineClamp: 2, 
       WebkitBoxOrient: "vertical",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "normal", // Allow wrapping
+      whiteSpace: "normal", 
     },
   };
 
@@ -41,8 +41,7 @@ const ProductPage = () => {
   const [error, setError] = useState(null);
   const [filterTitle, setFilterTitle] = useState("");
   const [filterPrice, setFilterPrice] = useState("");
-  const [loading, setLoading] = useState(true); // State to manage loading
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,7 +50,7 @@ const ProductPage = () => {
       } catch (error) {
         setError(error.message);
       } finally {
-        setLoading(false); // Set loading to false after fetch completes
+        setLoading(false); 
       }
     };
 

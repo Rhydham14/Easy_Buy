@@ -1,32 +1,27 @@
-#detail-product{
-    /* background-color: rgba(182, 0, 182, 0.212); */
-    /* border-radius: 0% 0% 8% 8%; */
-    border: solid  rgba(128, 0, 128, 0.295);
+#detail-product {
+  border: solid rgba(128, 0, 128, 0.295);
 }
 
-#buyBtn:hover{
-    border: solid  rgb(83, 2, 83);
-    /* color: rgb(255, 255, 255); */
-    background-color: white;
-    color: black;
+#buyBtn:hover {
+  border: solid rgb(83, 2, 83);
+  background-color: white;
+  color: black;
 }
 
-#cartBtn:hover{
-    border: solid  rgb(83, 2, 83);
-    /* color: rgb(255, 255, 255); */
-    background-color: white;
-    color: black;
+#cartBtn:hover {
+  border: solid rgb(83, 2, 83);
+  background-color: white;
+  color: black;
 }
 
-#cartBtn{
-    background-color: purple;
-    color: whitesmoke;
-    border: solid purple;
-
+#cartBtn {
+  background-color: purple;
+  color: whitesmoke;
+  border: solid purple;
 }
 
-#buyBtn{
-    background-color: purple;
-    color: whitesmoke;
-    border: solid purple;
+#buyBtn {
+  background-color: purple;
+  color: whitesmoke;
+  border: solid purple;
 }

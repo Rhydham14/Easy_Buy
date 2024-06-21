@@ -9,9 +9,7 @@ const addProduct = async({ title, description, price, category, images })=> {
       category,
       images
     });
-    
     await newProduct.save();
-    console.log("add data////////////",newProduct);
     return newProduct;
   } catch (error) {
     throw new Error('Failed to add product: ' + error.message);
@@ -32,7 +30,6 @@ const readProduct = async()=> {
       }
     })
     return data;
-
   } catch (error) {
     throw new Error('Failed to fetch product data: ' + error.message);
   }
@@ -88,12 +85,11 @@ const productPage = async(category)=> {
 const search = async (query) => {
   const results = await ProductModel.find({
     $or: [
-      { title: { $regex: query, $options: 'i' } }, // Case-insensitive search for title
-      { description: { $regex: query, $options: 'i' } }, // Case-insensitive search for description
-      { price: query } // Exact match for price (if price is a string)
+      { title: { $regex: query, $options: 'i' } }, 
+      { description: { $regex: query, $options: 'i' } },
+      { price: query } 
     ]
   }).select('title description price');
-  // console.log("result", results);
   return results;
 };
 

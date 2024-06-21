@@ -1,8 +1,8 @@
-#card-image:hover{
-    box-shadow: 1px 1px 10px 5px rgba(126, 5, 163, 0.26);
+#card-image:hover {
+  box-shadow: 1px 1px 10px 5px rgba(126, 5, 163, 0.26);
 }
 .card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

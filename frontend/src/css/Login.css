@@ -1,21 +1,14 @@
 .login {
-    color: rgb(0, 0, 0);
-    text-align: center;
-    /* background-color: aqua; */
-    /* box-shadow: 3px 2px 4px rgba(201, 201, 201, 0.795); */
-  
-    /* font-size: 100px; */
-    border-radius: 10px;
-  }
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 10px;
+}
 
-
-
-#p{
-    padding: 2.10%;
+#p {
+  padding: 2.1%;
 }
 
 #text {
-    
   color: rgb(8, 8, 8);
   background-color: rgb(255, 255, 255);
   width: 80vh;

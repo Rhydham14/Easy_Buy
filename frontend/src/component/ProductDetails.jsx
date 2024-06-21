@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams,NavLink } from "react-router-dom";
-import {
-  Container,
-  Grid,
-  Typography,
-  Button,
-  Box,
-  Link
-} from "@mui/material";
+import { useParams, NavLink } from "react-router-dom";
+import { Container, Grid, Typography, Button, Box, Link } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { FETCH_PRODUCT_DETAILS } from "../service/service";
@@ -15,25 +8,25 @@ import { useDispatch } from "react-redux";
 import { addCart } from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
-import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
+import Spinner from "react-bootstrap/Spinner";
 import "../css/Loader.css";
 import "../css/ProductDetails.css";
 
 const ProductDetails = () => {
   const { _id } = useParams();
   const [details, setDetails] = useState(null);
-  const [loading, setLoading] = useState(true); // State to manage loading
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productDetails = await FETCH_PRODUCT_DETAILS(_id); // Call the service function and wait for the response
+        const productDetails = await FETCH_PRODUCT_DETAILS(_id);
         setDetails(productDetails);
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {
-        setLoading(false); // Set loading to false after fetch completes
+        setLoading(false);
       }
     };
 
@@ -57,9 +50,13 @@ const ProductDetails = () => {
   return (
     <>
       <Header />
-      <Container className="pt-5 h-25" maxWidth="xl" sx={{ pt: 2, minHeight: "100vh" }}>
+      <Container
+        className="pt-5 h-25"
+        maxWidth="xl"
+        sx={{ pt: 2, minHeight: "100vh" }}
+      >
         <Grid container spacing={4}>
-          <Grid item xs={12} md={6} className="text-center" >
+          <Grid item xs={12} md={6} className="text-center">
             {details && (
               <>
                 <Box
@@ -69,27 +66,26 @@ const ProductDetails = () => {
                   sx={{ width: "60%", maxWidth: "100%", height: "auto" }}
                 />
                 <Box>
-                 
                   <NavLink
-                  as={Link}
-                  to={`/buynow/${details.price}`}
-                  style={{ textDecoration: "none" }}
-                >
-               <Button
-                    variant="contained"
-                    startIcon={<LocalMallIcon />}
-                    sx={{ m: 1 }}
-                    id="buyBtn"
+                    as={Link}
+                    to={`/buynow/${details.price}`}
+                    style={{ textDecoration: "none" }}
                   >
-                    Buy now
-                  </Button>
-                </NavLink>
+                    <Button
+                      variant="contained"
+                      startIcon={<LocalMallIcon />}
+                      sx={{ m: 1 }}
+                      id="buyBtn"
+                    >
+                      Buy now
+                    </Button>
+                  </NavLink>
                   <Button
                     variant="contained"
                     startIcon={<ShoppingCartCheckoutIcon />}
                     sx={{ m: 1 }}
                     id="cartBtn"
-                    onClick={()=>handleCart(details)}
+                    onClick={() => handleCart(details)}
                   >
                     Add to cart
                   </Button>

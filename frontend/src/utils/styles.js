@@ -1,6 +1,6 @@
 import { Carousel } from "react-bootstrap";
 import styled from "@emotion/styled";
- 
+
 const CustomCarousel = styled(Carousel)`
   height: 50vh;
   width: 100%;
@@ -13,5 +13,5 @@ const CustomCarousel = styled(Carousel)`
     object-fit: cover;
   }
 `;
- 
+
 export default CustomCarousel;

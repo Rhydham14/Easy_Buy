@@ -129,9 +129,9 @@ const Admin = () => {
     formData.append("title", newProduct.title);
     formData.append("price", newProduct.price);
     formData.append("description", newProduct.description);
-    formData.append("category", newProduct.category); 
+    formData.append("category", newProduct.category);
     formData.append("image", newProduct.image);
-  
+
     try {
       const response = await ADD_PRODUCT(formData);
       console.log("Response data:", response.message);
@@ -274,8 +274,10 @@ const Admin = () => {
                       height: "100%",
                     }}
                   >
-                    <CardHeader title={product.title}  sx={{ overflow: "hidden",  height: 100,
-                          width: "100%"}}/>
+                    <CardHeader
+                      title={product.title}
+                      sx={{ overflow: "hidden", height: 100, width: "100%" }}
+                    />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Box
                         component="img"

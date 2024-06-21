@@ -20,7 +20,7 @@ import MuiAlert from "@mui/material/Alert";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { UPDATE_USER_PROFILE, SEARCH } from "../service/service";
-import SearchIcon from '@mui/icons-material/Search';
+
 const Header = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -110,139 +110,96 @@ const Header = () => {
 
   return (
     <>
-    <Navbar expand="lg" className="bg-body-tertiary">
-  <Container fluid>
-    <Navbar.Brand href="/">
-      <StoreIcon style={{ fontSize: 32, color: "purple" }} />
-      easyBuy
-    </Navbar.Brand>
+      <Navbar expand="lg" className="bg-body-tertiary">
+        <Container fluid>
+          <Navbar.Brand href="/">
+            <StoreIcon style={{ fontSize: 32, color: "purple" }} />
+            easyBuy
+          </Navbar.Brand>
 
-    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    <Navbar.Collapse id="basic-navbar-nav">
-      <Nav className="ms-auto">
-
-        {/* Search bar for larger screens */}
-        <div className="search-container">
-      <div className="search-bar-container">
-        <Autocomplete
-          freeSolo
-          options={searchResults.map((result) => result.title)}
-          onInputChange={(event, newInputValue) => {
-            handleSearch(newInputValue);
-          }}
-          onChange={handleResultClick}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Search"
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                style: {
-                  backgroundColor: 'white',
-                  borderRadius: 5,
-                  paddingLeft: '10px',
-                  height: 51
-                }
-              }}
-            />
-          )}
-        />
-      </div>
-    </div>
-        {/* End Search bar */}
-
-        <Nav.Link>
-          {user && <h6 className="m-2">hello, {user.fullname}</h6>}
-        </Nav.Link>
-
-        <NavLink to="/cart">
-          {user && cartItems ? (
-            <Badge badgeContent={cartValue()} color="secondary">
-              <ShoppingCartIcon
-                id="icon-link"
-                className="mt-2"
-                style={{ fontSize: 32, color: "purple" }}
-              />
-            </Badge>
-          ) : (
-            <ShoppingCartIcon
-              id="icon-link"
-              className="mt-2"
-              style={{ fontSize: 32, color: "purple" }}
-            />
-          )}
-        </NavLink>
-        {user ? (
-          <NavDropdown
-            title={
-              <>
-                <AccountCircleIcon
-                  id="icon-link"
-                  className="me-2"
-                  style={{ fontSize: 32, color: "purple" }}
-                />
-              </>
-            }
-            id="basic-nav-dropdown"
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse
+            id="basic-navbar-nav"
+            className="justify-content-between"
           >
-            <NavDropdown.Item onClick={handleShow}>
-              Profile
-            </NavDropdown.Item>
-            {user.role === "admin" && (
-              <NavDropdown.Item onClick={handleAdmin}>
-                Admin portal
-              </NavDropdown.Item>
-            )}
-            <NavDropdown.Item onClick={handleLogout}>
-              Logout
-            </NavDropdown.Item>
-          </NavDropdown>
-        ) : (
-          <NavDropdown
-            title={
-              <>
-                <AccountCircleIcon
-                  id="icon-link"
-                  className="me-2"
-                  style={{ fontSize: 32, color: "purple" }}
-                />
-              </>
-            }
-            id="basic-nav-dropdown"
-          >
-            <NavDropdown.Item onClick={handleLogin}>
-              Login
-            </NavDropdown.Item>
-          </NavDropdown>
-        )}
-
-        {/* Search bar for smaller screens */}
-        <div className="d-lg-none mt-3">
-          <Autocomplete
-            freeSolo
-            options={searchResults.map((result) => result.title)}
-            onInputChange={(event, newInputValue) => {
-              handleSearch(newInputValue);
-            }}
-            onChange={handleResultClick}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search"
-                variant="outlined"
-                fullWidth
-                style={{ backgroundColor: "white", borderRadius: 4 }}
+            <div className="w-50">
+              <Autocomplete
+                freeSolo
+                options={searchResults.map((result) => result.title)}
+                onInputChange={(event, newInputValue) => {
+                  handleSearch(newInputValue);
+                }}
+                onChange={handleResultClick}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search"
+                    variant="outlined"
+                    fullWidth
+                    style={{ backgroundColor: "white", borderRadius: 4 }}
+                  />
+                )}
               />
-            )}
-          />
-        </div>
-        {/* End Search bar */}
+            </div>
 
-      </Nav>
-    </Navbar.Collapse>
-  </Container>
-</Navbar>
+            <Nav className="ms-auto">
+              {user && (
+                <Nav.Link>
+                  <h6 className="m-2">Hello, {user.fullname}</h6>
+                </Nav.Link>
+              )}
+
+              <NavLink to="/cart" className="nav-link">
+                {user && cartItems ? (
+                  <Badge badgeContent={cartValue()} color="secondary">
+                    <ShoppingCartIcon
+                      style={{ fontSize: 32, color: "purple" }}
+                    />
+                  </Badge>
+                ) : (
+                  <ShoppingCartIcon style={{ fontSize: 32, color: "purple" }} />
+                )}
+              </NavLink>
+
+              {user ? (
+                <NavDropdown
+                  title={
+                    <AccountCircleIcon
+                      style={{ fontSize: 32, color: "purple" }}
+                    />
+                  }
+                  id="basic-nav-dropdown"
+                >
+                  <NavDropdown.Item onClick={handleShow}>
+                    Profile
+                  </NavDropdown.Item>
+                  {user.role === "admin" && (
+                    <NavDropdown.Item onClick={handleAdmin}>
+                      Admin portal
+                    </NavDropdown.Item>
+                  )}
+                  <NavDropdown.Item onClick={handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <NavDropdown
+                  title={
+                    <AccountCircleIcon
+                      style={{ fontSize: 32, color: "purple" }}
+                    />
+                  }
+                  id="basic-nav-dropdown"
+                >
+                  <NavDropdown.Item onClick={handleLogin}>
+                    Login
+                  </NavDropdown.Item>
+                </NavDropdown>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -295,8 +252,12 @@ const Header = () => {
         >
           {snackbarMessage}
         </MuiAlert>
-      </Snackbar>
-    </>
+      </Snackbar>\
+      
+
+      
+      
+          </>
   );
 };
 
