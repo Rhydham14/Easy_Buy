@@ -70,22 +70,6 @@ const Admin = () => {
 
   const itemsPerPage = 8;
 
-  const styles = {
-    truncatedDescription: {
-      display: "-webkit-box",
-      WebkitLineClamp: 3,
-      WebkitBoxOrient: "vertical",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "normal",
-    },
-    image: {
-      width: "100%",
-      height: 200,
-      objectFit: "cover",
-    },
-  };
-
   const handleOpen = () => {
     setEditMode(false);
     setNewProduct({
@@ -185,7 +169,7 @@ const Admin = () => {
       console.error("An error occurred. Please try again.", error);
       setError(
         "An error occurred while updating the product. Please try again."
-      ); // Set error message
+      ); 
     }
   };
 
@@ -196,9 +180,9 @@ const Admin = () => {
 
   const handleRemoveProduct = async () => {
     try {
-      const productId = products[productToRemove]._id; // Get the product ID
-      await REMOVE_PRODUCT_DATA(productId); // Call the removal service
-      setProducts((prev) => prev.filter((_, i) => i !== productToRemove)); // Update the state
+      const productId = products[productToRemove]._id; 
+      await REMOVE_PRODUCT_DATA(productId);
+      setProducts((prev) => prev.filter((_, i) => i !== productToRemove));
       setProductToRemove(null);
       setConfirmationOpen(false);
     } catch (error) {

@@ -1,13 +1,9 @@
-// Import mongoose
-const mongoose = require('mongoose');
-// const date = require('date-and-time') ;
+const mongoose = require("mongoose");
 
-
-// Define the Payment schema
 const paymentSchema = new mongoose.Schema({
   id: {
     type: String,
-    required: true, 
+    required: true,
   },
   amount: {
     type: Number,
@@ -23,13 +19,10 @@ const paymentSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now, // Set default value to current date/time
+    default: Date.now,
   },
-
 });
 
-// Create the Payment model
-const Payment = mongoose.model('Payment', paymentSchema);
+const Payment = mongoose.model("Payment", paymentSchema);
 
-// Export the Payment model
 module.exports = Payment;

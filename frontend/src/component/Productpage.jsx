@@ -109,7 +109,7 @@ const ProductPage = () => {
           {category} Products
         </h1>
         <Row className="justify-content-center mb-4">
-          <Col xs={12} sm={6} md={4} className="mb-2">
+          <Col xs={12} sm={6} md={4} className="mb-2 ">
             <Form.Group controlId="filterTitle">
               <Form.Label>Filter by Title</Form.Label>
               <Form.Control
@@ -139,12 +139,12 @@ const ProductPage = () => {
         </Row>
         <Row className="justify-content-center">
           {filteredProducts.map((product, index) => (
-            <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4" >
               <Link
                 to={`/details/${product._id}`}
                 style={{ textDecoration: "none" }}
               >
-                <div className="card h-100">
+                <div className="card h-100" id="card-image">
                   <div className="card-body">
                     <Image
                       src={product.images ? product.images : "defaultImage.jpg"}

@@ -15,7 +15,7 @@ const addProduct = async(req, res)=> {
     if (!req.file) {
       return res.status(400).json({ error: "No image file uploaded" });
     }
-    const images = req.file.path; // Cloudinary URL
+    const images = req.file.path; 
     await productService.addProduct({
       title,
       description,
@@ -51,7 +51,6 @@ const updateProduct = async(req, res)=> {
 const removeProduct = async(req, res)=>{
   try{
     const {_id} = req.query;
-    console.log("reomve ppppppppp", _id);
     await productService.removeProduct(_id);
     res.status(200).json({message:"Product remove"});
   }catch(e){
@@ -84,11 +83,10 @@ const productPage = async(req, res)=> {
 const search = async (req, res) => {
   try {
     const query = req.body.query;
-    console.log("search query:", query); // Log the search query for debugging
     const searchData = await productService.search(query);
     res.status(200).json(searchData);
   } catch (e) {
-    console.error('Error searching:', e); // Log the error for debugging  
+    console.error('Error searching:', e); 
     res.status(500).json({ error: "searching error" });
   }
 };

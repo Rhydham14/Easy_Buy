@@ -1,5 +1,5 @@
-const Stripe = require('stripe');
-require('dotenv').config();
+const Stripe = require("stripe");
+require("dotenv").config();
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const paymentModel = require("../Models/paymentModel");
 
@@ -7,7 +7,7 @@ const createPaymentIntent = async (amount) => {
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: 'usd',
+      currency: "usd",
     });
     return paymentIntent;
   } catch (error) {
@@ -26,7 +26,7 @@ const paymentDetials = async (paymentIntent) => {
     return createdPayment;
   } catch (error) {
     console.error({ error: "Error for transaction" });
-    throw new Error(error.message); // Re-throw the error to handle it in the calling function
+    throw new Error(error.message);
   }
 };
 
@@ -40,19 +40,18 @@ const showTransactions = async () => {
         status: data.status,
         currency: data.currency,
         createdAt: data.createdAt,
-        _id: data._id // Added user_id if needed
+        _id: data._id,
       };
     });
     return data;
   } catch (error) {
     console.error({ error: "Error fetching transactions" });
-    throw error; // Optionally, rethrow the error if you want to handle it further up the call stack
+    throw error;
   }
 };
-
 
 module.exports = {
   createPaymentIntent,
   paymentDetials,
-  showTransactions
+  showTransactions,
 };

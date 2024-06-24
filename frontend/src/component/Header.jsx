@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -26,7 +26,6 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [fullname, setFullname] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -45,7 +44,6 @@ const Header = () => {
   const itemsLenght = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-  console.log("cartItems header", cartItems);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -77,15 +75,21 @@ const Header = () => {
       setSnackbarOpen(true);
     }
   };
-  const handleSearch = async (query) => {
-    try {
-      setSearchQuery(query);
-      const response = await SEARCH(query);
-      setSearchResults(response);
-    } catch (error) {
-      console.error("Error searching:", error);
-    }
-  };
+
+  const [search, Setsearch] = useState();
+
+  useEffect(() => {
+    const searchData = setTimeout(async () => {
+      try {
+        const response = await SEARCH(search);
+        setSearchResults(response);
+      } catch (error) {
+        console.error("Error searching:", error);
+      }
+    }, 2000);
+
+    return () => clearTimeout(searchData);
+  }, [search]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -127,7 +131,7 @@ const Header = () => {
                 freeSolo
                 options={searchResults.map((result) => result.title)}
                 onInputChange={(event, newInputValue) => {
-                  handleSearch(newInputValue);
+                  Setsearch(newInputValue);
                 }}
                 onChange={handleResultClick}
                 renderInput={(params) => (
@@ -173,9 +177,9 @@ const Header = () => {
                   <NavDropdown.Item onClick={handleShow}>
                     Profile
                   </NavDropdown.Item>
-                  {user.role === "admin" && (
+                  {user.role === "merchant" && (
                     <NavDropdown.Item onClick={handleAdmin}>
-                      Admin portal
+                      Merchant
                     </NavDropdown.Item>
                   )}
                   <NavDropdown.Item onClick={handleLogout}>
@@ -252,12 +256,8 @@ const Header = () => {
         >
           {snackbarMessage}
         </MuiAlert>
-      </Snackbar>\
-      
-
-      
-      
-          </>
+      </Snackbar>
+    </>
   );
 };
 
