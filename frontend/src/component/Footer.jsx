@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Grid, Link, Typography, Box, Divider } from "@mui/material";
-
+import '../css/Footer.css'
 export default function Footer() {
   return (
     <Box
       component="footer"
-      sx={{ color: "white", py: 4 }}
-      style={{ backgroundColor: "purple" }}
+      sx={{ color: "white", py: 5 }}
+      id="boxfooter"
     >
       <Container>
         <Typography variant="body1" align="center" sx={{ mb: 4 }}>

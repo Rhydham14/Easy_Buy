@@ -62,17 +62,23 @@ export const FETCH_DATA = async () => {
 };
 
 export const UPDATE_PRODUCT = async (productId, formData) => {
-  const response = await axiosInstance.patch(
-    `/easyBuy.com/api/product/updateProduct?_id=${productId}`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-  return response.data;
+  try {
+    const response = await axiosInstance.patch(
+      `/easyBuy.com/api/product/updateProduct?_id=${productId}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("formData title", formData.get("title"));
+    return response;
+  } catch (error) {
+    console.error("Error updating product:", error);
+  }
 };
+
 
 export const REMOVE_PRODUCT_DATA = async (productId) => {
   const response = await axiosInstance.delete(
@@ -157,12 +163,12 @@ export const PAYMENT = async (totalPrice) => {
   }
 };
 
-export const PAYMENT_DETAILS = async (paymentIntent) => {
+export const PAYMENT_DETAILS = async (paymentIntent, fullname, deliveryAddress) => {
   try {
     const response = await axiosInstance.post(
       "/easyBuy.com/api/payment/paymentDetials",
       {
-        paymentIntent,
+        paymentIntent, fullname, deliveryAddress
       }
     );
     console.log("Payment saved", response.data);
@@ -184,3 +190,4 @@ export const SHOW_TRANSACTIONS = async () => {
     console.error("fail to show tansaction", error);
   }
 };
+

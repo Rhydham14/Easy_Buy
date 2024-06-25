@@ -45,7 +45,7 @@ const Cart = () => {
     dispatch(removeFromCart(_id));
   };
 
-  const handleIncrement = (_id) => {
+  const handleIncrement = (_id) => {  
     dispatch(incrementItemQuantity(_id));
   };
 

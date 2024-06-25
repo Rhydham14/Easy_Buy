@@ -44,6 +44,7 @@ const Header = () => {
   const itemsLenght = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
+  console.log("cartItems header", cartItems);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -83,6 +84,7 @@ const Header = () => {
       try {
         const response = await SEARCH(search);
         setSearchResults(response);
+        console.log("search applied");
       } catch (error) {
         console.error("Error searching:", error);
       }
@@ -94,7 +96,6 @@ const Header = () => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
-
   const handleResultClick = (event, value) => {
     const selectedProduct = searchResults.find(
       (result) => result.title === value
@@ -112,7 +113,7 @@ const Header = () => {
     }
   };
 
-  return (
+  return (  
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
@@ -120,7 +121,6 @@ const Header = () => {
             <StoreIcon style={{ fontSize: 32, color: "purple" }} />
             easyBuy
           </Navbar.Brand>
-
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse
             id="basic-navbar-nav"
@@ -147,13 +147,41 @@ const Header = () => {
             </div>
 
             <Nav className="ms-auto">
-              {user && (
-                <Nav.Link>
-                  <h6 className="m-2">Hello, {user.fullname}</h6>
-                </Nav.Link>
-              )}
+  {user && (
+    <Nav.Link>
+      <h6 className="m-2">Welcome, {user.fullname}</h6>
+    </Nav.Link>
+  )}
 
-              <NavLink to="/cart" className="nav-link">
+  <NavDropdown
+    title={
+      <AccountCircleIcon
+        style={{ fontSize: 32, color: "purple" }}
+      />
+    }
+    id="basic-nav-dropdown"
+  >
+    {user ? (
+      <>
+        <NavDropdown.Item onClick={handleShow}>
+          Profile
+        </NavDropdown.Item>
+        <NavDropdown.Item onClick={handleAdmin}>
+          Merchant
+        </NavDropdown.Item>
+        <NavDropdown.Item onClick={handleLogout}>
+          Logout
+        </NavDropdown.Item>
+      </>
+    ) : (
+      <NavDropdown.Item onClick={handleLogin}>
+        Login
+      </NavDropdown.Item>
+    )}
+  </NavDropdown>
+</Nav>
+
+            <NavLink to="/cart" className="nav-link">
                 {user && cartItems ? (
                   <Badge badgeContent={cartValue()} color="secondary">
                     <ShoppingCartIcon
@@ -164,43 +192,6 @@ const Header = () => {
                   <ShoppingCartIcon style={{ fontSize: 32, color: "purple" }} />
                 )}
               </NavLink>
-
-              {user ? (
-                <NavDropdown
-                  title={
-                    <AccountCircleIcon
-                      style={{ fontSize: 32, color: "purple" }}
-                    />
-                  }
-                  id="basic-nav-dropdown"
-                >
-                  <NavDropdown.Item onClick={handleShow}>
-                    Profile
-                  </NavDropdown.Item>
-                  {user.role === "merchant" && (
-                    <NavDropdown.Item onClick={handleAdmin}>
-                      Merchant
-                    </NavDropdown.Item>
-                  )}
-                  <NavDropdown.Item onClick={handleLogout}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <NavDropdown
-                  title={
-                    <AccountCircleIcon
-                      style={{ fontSize: 32, color: "purple" }}
-                    />
-                  }
-                  id="basic-nav-dropdown"
-                >
-                  <NavDropdown.Item onClick={handleLogin}>
-                    Login
-                  </NavDropdown.Item>
-                </NavDropdown>
-              )}
-            </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>

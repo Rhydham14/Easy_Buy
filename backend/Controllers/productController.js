@@ -30,23 +30,27 @@ const addProduct = async(req, res)=> {
   }
 }
 
-const updateProduct = async(req, res)=> {
+const updateProduct = async (req, res) => {
   try {
-    const { title, description, price, category, image } = req.body;
     const { _id } = req.query;
+    const { title, description, price, category } = req.body
+    const { path } = req.file;
+    console.log("updt query controller", req.query);
+    console.log("updt body controller", req.body);
+
     await productService.updateProduct({
       title,
       description,
       price,
       category,
       _id,
-      image,
+      path,
     });
-    res.status(200).json({ message: "Product edit successfully" });
+    res.status(200).json({ message: "Product edited successfully" });
   } catch (e) {
     res.status(500).json({ e: "Failed to edit product" });
   }
-}
+};
 
 const removeProduct = async(req, res)=>{
   try{
@@ -90,6 +94,8 @@ const search = async (req, res) => {
     res.status(500).json({ error: "searching error" });
   }
 };
+
+
 
 module.exports = {
   readProduct,

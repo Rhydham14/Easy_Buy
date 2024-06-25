@@ -1,3 +1,4 @@
+const { PassThrough } = require("nodemailer/lib/xoauth2");
 const ProductModel = require("../Models/productModel");
 const addProduct = async ({ title, description, price, category, images }) => {
   try {
@@ -34,15 +35,23 @@ const readProduct = async () => {
   }
 };
 
-const updateProduct = async (updateData) => {
+const updateProduct = async ({
+  title,
+  description,
+  price,
+  category,
+  _id,
+  path,
+}) => {
+  console.log("iamgeeeeeeeeee",path);
   try {
-    const _id = updateData._id;
+    // const _id = updateData._id;
     const updatedData = await ProductModel.findByIdAndUpdate(_id, {
-      title: updateData.title,
-      description: updateData.description,
-      price: updateData.price,
-      category: updateData.category,
-      images: updateData.images,
+      title: title,
+      description: description,
+      price: price,
+      category: category,
+      images: path,
     });
     return updatedData;
   } catch (error) {
@@ -88,6 +97,7 @@ const search = async (query) => {
   }).select("title description price");
   return results;
 };
+
 
 module.exports = {
   addProduct,

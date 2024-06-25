@@ -12,6 +12,7 @@ import ScrollToTop from "./component/ScrollTop";
 import BuyNow from "./component/BuyNow";
 import StripeProvider from "../src/component/StripeProvider";
 import PaymentSuccess from "../src/component/Success";
+import AllTransactions from "../src/component/AllTransaction";
 
 const App = () => (
   <Router>
@@ -35,6 +36,7 @@ const App = () => (
           }
         />
         <Route path="/pages/:category" element={<ProductPage />} />
+        <Route path="AllTransactions" element={<AllTransactions/>}/>
       </Routes>
     </StripeProvider>
   </Router>

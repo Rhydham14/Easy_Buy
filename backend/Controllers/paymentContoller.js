@@ -13,9 +13,9 @@ const createPayment = async (req, res) => {
 };
 
 const paymentDetials = async (req, res) => {
-  const { paymentIntent } = req.body;
+  const { paymentIntent,deliveryAddress,fullname } = req.body;
   try {
-    const paymentDetail = await paymentService.paymentDetials(paymentIntent);
+    const paymentDetail = await paymentService.paymentDetials(paymentIntent,fullname,deliveryAddress);
     res.status(200).json({ paymentDetail });
   } catch (error) {
     console.error(error);

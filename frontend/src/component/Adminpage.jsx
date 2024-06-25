@@ -23,24 +23,15 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import StoreIcon from "@mui/icons-material/Store";
 import Navbar from "react-bootstrap/Navbar";
-import Pagination from "@mui/material/Pagination";
 import Spinner from "react-bootstrap/Spinner"; // Import Bootstrap Spinner
 import {
   ADD_PRODUCT,
   FETCH_DATA,
   UPDATE_PRODUCT,
-  SHOW_TRANSACTIONS,
   REMOVE_PRODUCT_DATA, // Import REMOVE_PRODUCT_DATA
 } from "../service/service";
 import "../css/Loader.css"; // Import loader CSS
@@ -54,12 +45,10 @@ const Admin = () => {
   const [currentProductIndex, setCurrentProductIndex] = useState(null);
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true); // State to manage loading
   const [snackbarOpen, setSnackbarOpen] = useState(false); // Snackbar state
   const [confirmationOpen, setConfirmationOpen] = useState(false); // Confirmation dialog state
   const [productToRemove, setProductToRemove] = useState(null); // Product to be removed
-  const [transactions, setTransaction] = useState(null);
   const [newProduct, setNewProduct] = useState({
     title: "",
     price: "",
@@ -67,8 +56,6 @@ const Admin = () => {
     category: "",
     image: null,
   });
-
-  const itemsPerPage = 8;
 
   const handleOpen = () => {
     setEditMode(false);
@@ -119,11 +106,9 @@ const Admin = () => {
     try {
       const response = await ADD_PRODUCT(formData);
       console.log("Response data:", response.message);
-      // const { message } = response.data;
       if (response && response.message) {
-        // Successful product addition
         setProducts((prev) => [...prev, newProduct]);
-        setSnackbarOpen(true); // Display success snackbar
+        setSnackbarOpen(true);
         handleClose();
       } else {
         console.error("Error adding product");
@@ -138,12 +123,10 @@ const Admin = () => {
       try {
         const data = await FETCH_DATA();
         setProducts(data);
-        const transaction = await SHOW_TRANSACTIONS();
-        setTransaction(transaction);
       } catch (error) {
-        setError("An error occurred while fetching the data."); // Set error message
+        setError("An error occurred while fetching the data.");
       } finally {
-        setLoading(false); // Set loading to false after fetch completes
+        setLoading(false);
       }
     };
     fetchData();
@@ -169,7 +152,7 @@ const Admin = () => {
       console.error("An error occurred. Please try again.", error);
       setError(
         "An error occurred while updating the product. Please try again."
-      ); 
+      );
     }
   };
 
@@ -180,7 +163,7 @@ const Admin = () => {
 
   const handleRemoveProduct = async () => {
     try {
-      const productId = products[productToRemove]._id; 
+      const productId = products[productToRemove]._id;
       await REMOVE_PRODUCT_DATA(productId);
       setProducts((prev) => prev.filter((_, i) => i !== productToRemove));
       setProductToRemove(null);
@@ -192,11 +175,6 @@ const Admin = () => {
       );
     }
   };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   if (loading) {
     return (
@@ -222,11 +200,11 @@ const Admin = () => {
           <StoreIcon style={{ fontSize: 40, color: "purple" }} />
           easyBuy
           <Typography variant="h3" align="center" color="black" gutterBottom>
-            Welcome Admin
+            Welcome Merchant
           </Typography>
         </Navbar.Brand>
 
-        <Grid container spacing={4}>
+        <Grid containe r spacing={4}>
           <Grid item xs={12}>
             <Typography variant="h3">Your Profile</Typography>
             <Paper sx={{ maxHeight: 400, overflow: "auto" }}>
@@ -239,8 +217,19 @@ const Admin = () => {
             </Paper>
           </Grid>
 
+          <Button
+            variant="contained"
+
+            sx={{ mb: 2, mt:2, backgroundColor: "purple", float:'right' }}
+          >
+            <Link to="/AllTransactions" style={{ color:"white", textDecoration:"none"}}>
+              All Transactions
+            </Link>
+          </Button>
           <Grid item xs={12}>
+     
             <Typography variant="h3">Product Details</Typography>
+            
             <Button
               variant="contained"
               sx={{ mb: 2, backgroundColor: "purple", color: "white" }}
@@ -249,7 +238,7 @@ const Admin = () => {
               Add Product
             </Button>
             <Grid container spacing={2}>
-              {currentItems.map((product, index) => (
+              {products.map((product, index) => (
                 <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                   <Card
                     sx={{
@@ -260,7 +249,12 @@ const Admin = () => {
                   >
                     <CardHeader
                       title={product.title}
-                      sx={{ overflow: "hidden", height: 100, width: "100%" }}
+                      sx={{
+                        height: 100,
+                        width: "100%",
+                        marginTop: 2,
+                        paddingTop: 2,
+                      }}
                     />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Box
@@ -270,10 +264,10 @@ const Admin = () => {
                           width: "100%",
                           objectFit: "cover",
                           mb: 2,
-                          overflow: "hidden", // Add overflow hidden here
+                          overflow: "hidden",
                         }}
                         src={product.images}
-                        alt={product.title} // Add alt attribute here
+                        alt={product.title}
                       />
                       <Typography
                         variant="body2"
@@ -316,69 +310,8 @@ const Admin = () => {
                 {error}
               </Typography>
             )}
-            <Pagination
-              count={Math.ceil(products.length / itemsPerPage)}
-              variant="outlined"
-              shape="rounded"
-              onChange={(event, value) => paginate(value)}
-              sx={{ mt: 2 }}
-            />
           </Grid>
         </Grid>
-
-        <Typography variant="h3" sx={{ mt: 2 }}>
-          Transaction Details
-        </Typography>
-
-        <Card sx={{ mt: 2 }}>
-          <CardContent>
-            {transactions.length > 0 ? (
-              <TableContainer
-                component={Paper}
-                sx={{ maxHeight: 400, overflow: "auto" }}
-              >
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID</TableCell>
-                      <TableCell align="right">Amount</TableCell>
-                      <TableCell align="right">Status</TableCell>
-                      <TableCell align="right">Currency</TableCell>
-                      <TableCell align="right">Created At</TableCell>
-                      <TableCell align="right">User ID</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {transactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell component="th" scope="row">
-                          {transaction.id}
-                        </TableCell>
-                        <TableCell align="right">
-                          {transaction.amount}
-                        </TableCell>
-                        <TableCell align="right">
-                          {transaction.status}
-                        </TableCell>
-                        <TableCell align="right">
-                          {transaction.currency}
-                        </TableCell>
-                        <TableCell align="right">
-                          {transaction.createdAt}
-                        </TableCell>
-                        <TableCell align="right">{transaction._id}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            ) : (
-              <Typography variant="body2" color="textSecondary">
-                No transaction details available.
-              </Typography>
-            )}
-          </CardContent>
-        </Card>
 
         <Modal
           open={open}
@@ -451,9 +384,6 @@ const Admin = () => {
                 <MenuItem value="Home-Kitchen">Home Kitchen</MenuItem>
                 <MenuItem value="TV Screen">TV & Screen</MenuItem>
                 <MenuItem value="Smart Technology">Smart Technology</MenuItem>
-                {/* <MenuItem value="Laptops & Accessories">
-                  Laptops & Accessories
-                </MenuItem> */}
                 <MenuItem value="Music Instruments">Music Instruments</MenuItem>
                 <MenuItem value="Books">Books</MenuItem>
               </Select>

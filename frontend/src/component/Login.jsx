@@ -5,6 +5,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../slice/authSlice";
 import { LOGIN_USER } from "../service/service";
+import Navbar from "react-bootstrap/Navbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,10 +35,12 @@ const Login = () => {
 
   return (
     <div className="container-fluid">
-      <h1 className="text-center">
+          <Navbar.Brand href="/">
+      <h1 className="text-center" href="/">
         <StoreIcon style={{ fontSize: 40, color: "purple" }} />
         easyBuy
       </h1>
+      </Navbar.Brand>
       <div className="row mx-auto d-flex justify-content-center">
         <div className="col-sm-12 p-5 mx-auto" id="text">
           <h1 className="login" id="login" style={{ color: "purple" }}>

@@ -15,13 +15,16 @@ const createPaymentIntent = async (amount) => {
   }
 };
 
-const paymentDetials = async (paymentIntent) => {
+const paymentDetials = async (paymentIntent,fullname,deliveryAddress) => {
   try {
     const createdPayment = await paymentModel.create({
       id: paymentIntent.id,
       amount: paymentIntent.amount,
       status: paymentIntent.status,
       currency: paymentIntent.currency,
+      fullname: fullname,
+      deliveryAddress:deliveryAddress
+
     });
     return createdPayment;
   } catch (error) {
@@ -41,6 +44,8 @@ const showTransactions = async () => {
         currency: data.currency,
         createdAt: data.createdAt,
         _id: data._id,
+        deliveryAddress:data.deliveryAddress,
+        fullname:data.fullname
       };
     });
     return data;
