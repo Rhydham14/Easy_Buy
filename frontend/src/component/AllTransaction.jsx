@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
 import {
   Card,
   CardContent,
@@ -106,7 +105,7 @@ const AllTransactions = () => {
                       Full Name: {transaction.fullname}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Address: {transaction.deliveryAddress}
+                      Address: {transaction.deliveryAddress.street}, {transaction.deliveryAddress.city}, {transaction.deliveryAddress.state}, {transaction.deliveryAddress.pinCode}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Amount: {transaction.amount}

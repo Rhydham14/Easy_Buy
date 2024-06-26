@@ -21,14 +21,28 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  deliveryAddress:{
-    type: String,
-    required:true
+  deliveryAddress: {
+    street: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    pinCode: {
+      type: String,
+      required: true,
+    },
   },
-  fullname:{
-    type:String,
-    required: true
-  }
+  fullname: {
+    type: String,
+    required: true,
+  },
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);

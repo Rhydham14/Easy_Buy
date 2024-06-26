@@ -51,6 +51,11 @@ const Header = () => {
     navigate("/");
   };
 
+  const handleOrderList = () =>{
+    navigate("/orderlist");
+
+  }
+
   const handleLogin = () => {
     navigate("/login");
   };
@@ -166,8 +171,13 @@ const Header = () => {
         <NavDropdown.Item onClick={handleShow}>
           Profile
         </NavDropdown.Item>
-        <NavDropdown.Item onClick={handleAdmin}>
+        {user.role === "merchant" && (
+          <NavDropdown.Item onClick={handleAdmin}>
           Merchant
+        </NavDropdown.Item>
+        )}
+         <NavDropdown.Item onClick={handleOrderList}>
+          Order list
         </NavDropdown.Item>
         <NavDropdown.Item onClick={handleLogout}>
           Logout

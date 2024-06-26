@@ -3,7 +3,7 @@ import "../css/BuyNow.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useParams, useNavigate } from "react-router-dom";
 import { PAYMENT, PAYMENT_DETAILS } from "../service/service";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { buyProduct } from "../slice/cartSlice";
 import { Container, Row, Col, Form, Button, Alert, Spinner, Card } from 'react-bootstrap';
 
@@ -16,7 +16,12 @@ const BuyNow = () => {
   const [error, setError] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
   const [fullName, setFullName] = useState("");
-  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    state: "",
+    pinCode: "",
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -45,7 +50,10 @@ const BuyNow = () => {
         billing_details: {
           name: fullName,
           address: {
-            line1: deliveryAddress,
+            line1: address.street,
+            city: address.city,
+            state: address.state,
+            postal_code: address.pinCode,
           },
         },
       },
@@ -56,7 +64,7 @@ const BuyNow = () => {
       setLoading(false);
     } else {
       try {
-        await PAYMENT_DETAILS(paymentIntent, fullName, deliveryAddress);
+        await PAYMENT_DETAILS(paymentIntent, fullName, address);
         dispatch(buyProduct(paymentIntent.status));
         navigate("/PaymentSuccess");
       } catch (error) {
@@ -65,6 +73,14 @@ const BuyNow = () => {
         setLoading(false);
       }
     }
+  };
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress((prevAddress) => ({
+      ...prevAddress,
+      [name]: value,
+    }));
   };
 
   return (
@@ -76,8 +92,7 @@ const BuyNow = () => {
               <h1 className="mb-4">Checkout</h1>
               <h4 className="mb-4" style={{color:"green"}}>Total Price: ${totalPrice}</h4>
               <Form onSubmit={handleSubmit}>
-              <h4>Personal Details</h4>
-
+                <h4>Personal Details</h4>
                 <Form.Group className="mb-3">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control
@@ -88,20 +103,55 @@ const BuyNow = () => {
                     required
                   />
                 </Form.Group>
+                <h4>Delivery Address</h4>
                 <Form.Group className="mb-3">
-                  <Form.Label>Delivery Address</Form.Label>
+                  <Form.Label>Street</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter your delivery address"
-                    value={deliveryAddress}
-                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                    placeholder="Enter your street"
+                    name="street"
+                    value={address.street}
+                    onChange={handleAddressChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>City</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your city"
+                    name="city"
+                    value={address.city}
+                    onChange={handleAddressChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your state"
+                    name="state"
+                    value={address.state}
+                    onChange={handleAddressChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Pin Code</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter your pin code"
+                    name="pinCode"
+                    value={address.pinCode}
+                    onChange={handleAddressChange}
                     required
                   />
                 </Form.Group>
                 <hr/>
                 <h4>Payment Details</h4>
                 <Form.Group className="mb-3">
-                <Form.Label>Card data</Form.Label>
+                  <Form.Label>Card data</Form.Label>
                   <div className="p-2 border rounded">
                     <CardElement />
                   </div>

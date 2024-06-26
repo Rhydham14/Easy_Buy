@@ -26,6 +26,8 @@ import {
 import Header from "./Header";
 import Footer from "./Footer";
 import Spinner from "react-bootstrap/Spinner";
+import {  ORDER_LIST } from "../service/service";
+
 const Cart = () => {
   const [loading, setLoading] = useState(true);
 
@@ -35,11 +37,27 @@ const Cart = () => {
     }, 1000);
   }, []);
 
-  const cartItems = useSelector((state) => state.cart.items);
-  console.log("cartItems carttttttttttttttt", cartItems);
-
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
   const user = useSelector((state) => state.auth.isLogin);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log("cartItems carttttttttttttttt", cartItems);
+        await ORDER_LIST(cartItems.map(item => ({
+          title: item.title,
+          id: item.id,
+          price: item.price,
+        })));      } catch (error) {
+        console.error("Error fetching product details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   const handleRemoveItem = (_id) => {
     dispatch(removeFromCart(_id));

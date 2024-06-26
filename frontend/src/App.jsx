@@ -13,6 +13,7 @@ import BuyNow from "./component/BuyNow";
 import StripeProvider from "../src/component/StripeProvider";
 import PaymentSuccess from "../src/component/Success";
 import AllTransactions from "../src/component/AllTransaction";
+import OrderList from "./component/Oderlist";
 
 const App = () => (
   <Router>
@@ -37,6 +38,7 @@ const App = () => (
         />
         <Route path="/pages/:category" element={<ProductPage />} />
         <Route path="AllTransactions" element={<AllTransactions/>}/>
+        <Route path="/OrderList" element={<OrderList/>}/>
       </Routes>
     </StripeProvider>
   </Router>

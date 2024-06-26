@@ -5,7 +5,7 @@ const userController = require("../Controllers/userController");
 const productController = require("../Controllers/productController");
 const upload = require("../Middlewear/multer");
 const paymentController = require("../Controllers/paymentContoller");
-
+const orderController = require('../Controllers/orderController');
 
 //Users
 router.post("/register", userController.register);
@@ -28,5 +28,11 @@ router.post("/search",productController.search);
 router.post("/create-payment-intent",paymentController.createPayment)
 router.post("/paymentDetials",paymentController.paymentDetials);
 router.get("/showTransactions", paymentController.showTransactions);
+
+// orderlist
+router.post("/orderlist", orderController.orderlist);
+router.get('/orderlist', orderController.getAllOrders);
+
+
 module.exports = router;
     

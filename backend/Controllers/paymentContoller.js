@@ -13,15 +13,16 @@ const createPayment = async (req, res) => {
 };
 
 const paymentDetials = async (req, res) => {
-  const { paymentIntent,deliveryAddress,fullname } = req.body;
+  const { paymentIntent, deliveryAddress, fullname } = req.body;
   try {
-    const paymentDetail = await paymentService.paymentDetials(paymentIntent,fullname,deliveryAddress);
+    const paymentDetail = await paymentService.paymentDetials(paymentIntent, fullname, deliveryAddress);
     res.status(200).json({ paymentDetail });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal payment error" });
   }
 };
+
 
 const showTransactions = async (req, res) => {
   try {
@@ -31,6 +32,7 @@ const showTransactions = async (req, res) => {
     res.status(500).json({ error: "Internal payment error" });
   }
 };
+  
 
 module.exports = {
   createPayment,

@@ -3,8 +3,8 @@ import { useParams, NavLink } from "react-router-dom";
 import { Container, Grid, Typography, Button, Box, Link } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import { FETCH_PRODUCT_DETAILS } from "../service/service";
-import { useDispatch } from "react-redux";
+import { FETCH_PRODUCT_DETAILS, ORDER_LIST } from "../service/service";
+import { useDispatch, useSelector } from "react-redux";
 import { addCart } from "../slice/cartSlice";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -17,12 +17,17 @@ const ProductDetails = () => {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.isLogin);
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productDetails = await FETCH_PRODUCT_DETAILS(_id);
         setDetails(productDetails);
+        console.log("detialssss",productDetails);
+        await ORDER_LIST({productDetails});
+
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {
@@ -34,8 +39,19 @@ const ProductDetails = () => {
   }, [_id]);
 
   const handleCart = (details) => {
+    if (!user) {
+      alert("Please login to add items to the cart.");
+      return;
+    }
     const { _id, title, price, images } = details;
     dispatch(addCart({ _id, title, price, images }));
+  };
+
+  const handleBuyNow = (price) => {
+    if (!user) {
+      alert("Please login to buy items.");
+      return;
+    }
   };
 
   if (loading) {
@@ -68,8 +84,9 @@ const ProductDetails = () => {
                 <Box>
                   <NavLink
                     as={Link}
-                    to={`/buynow/${details.price}`}
+                    to={user ? `/buynow/${details.price}` : "#"}
                     style={{ textDecoration: "none" }}
+                    onClick={() => handleBuyNow(details.price)}
                   >
                     <Button
                       variant="contained"

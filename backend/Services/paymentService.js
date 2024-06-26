@@ -15,7 +15,7 @@ const createPaymentIntent = async (amount) => {
   }
 };
 
-const paymentDetials = async (paymentIntent,fullname,deliveryAddress) => {
+const paymentDetials = async (paymentIntent, fullname, deliveryAddress) => {
   try {
     const createdPayment = await paymentModel.create({
       id: paymentIntent.id,
@@ -23,8 +23,12 @@ const paymentDetials = async (paymentIntent,fullname,deliveryAddress) => {
       status: paymentIntent.status,
       currency: paymentIntent.currency,
       fullname: fullname,
-      deliveryAddress:deliveryAddress
-
+      deliveryAddress: {
+        street: deliveryAddress.street,
+        city: deliveryAddress.city,
+        state: deliveryAddress.state,
+        pinCode: deliveryAddress.pinCode,
+      },
     });
     return createdPayment;
   } catch (error) {
@@ -32,6 +36,7 @@ const paymentDetials = async (paymentIntent,fullname,deliveryAddress) => {
     throw new Error(error.message);
   }
 };
+
 
 const showTransactions = async () => {
   try {
@@ -44,8 +49,13 @@ const showTransactions = async () => {
         currency: data.currency,
         createdAt: data.createdAt,
         _id: data._id,
-        deliveryAddress:data.deliveryAddress,
-        fullname:data.fullname
+        deliveryAddress: {
+          street: data.deliveryAddress.street,
+          city: data.deliveryAddress.city,
+          state: data.deliveryAddress.state,
+          pinCode: data.deliveryAddress.pinCode,
+        },
+        fullname: data.fullname,
       };
     });
     return data;

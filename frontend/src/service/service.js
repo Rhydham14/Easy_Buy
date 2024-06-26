@@ -191,3 +191,26 @@ export const SHOW_TRANSACTIONS = async () => {
   }
 };
 
+
+export const ORDER_LIST = async (productDetails) => {
+  console.log("oder frontend",productDetails);
+  try {
+      const response = await axiosInstance.post(
+        "/easyBuy.com/api/orderlist/orderlist", productDetails
+      );
+      return response;
+  } catch (error) {
+    console.error("Failed to show transaction", error);
+  }
+};
+
+export const ORDER_DATA = async() => {
+  try{
+    const response = await axiosInstance.get("/easyBuy.com/api/orderlist/orderlist");
+    return response
+  }catch(error){
+    console.error("Failed to show transaction", error);
+
+  }
+}
+
