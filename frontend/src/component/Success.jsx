@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
-import video from "/home/rhydham/Documents/Easybuy/frontend/src/images/OrderPlaced.mp4";
+import video from "../images/OrderPlaced.mp4";
 
 const PaymentSuccess = () => {
   const videoRef = useRef(null);
