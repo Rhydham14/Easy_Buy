@@ -49,7 +49,7 @@ const verifyEmail = async (req, res) => {
 
     await User.findByIdAndUpdate(userId, { isVerified: true });
     await Token.deleteOne({ _id: tokenDoc._id });
-    const loginUrl = `http://192.168.2.126:3000/login`;
+    const loginUrl = `https://easy-buy-qeqn.vercel.app/login`;
     return res.redirect(loginUrl);
   } catch (error) {
     console.error("Error verifying email:", error);
