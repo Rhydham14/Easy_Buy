@@ -45,13 +45,14 @@ const cartSlice = createSlice({
       const itemId = action.payload;
       const itemToUpdate = state.items.find((item) => item._id === itemId);
       if (itemToUpdate && itemToUpdate.quantity > 1) {
-        itemToUpdate.quantity -= 1;
+        itemToUpdate.quantity -= 1;  
+        
       }
     },
     emitCart: () => {
       EMPTY_PRODUCT();
     },
-    
+
     buyProduct: (state, action) => {
       const status = action.payload;
       console.log("redus status", status);

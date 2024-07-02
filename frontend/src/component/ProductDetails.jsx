@@ -18,16 +18,14 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.isLogin);
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productDetails = await FETCH_PRODUCT_DETAILS(_id);
         setDetails(productDetails);
-        console.log("detialssss",productDetails);
-        await ORDER_LIST({productDetails});
-
+        console.log("detialssss", productDetails);
+        await ORDER_LIST({ productDetails });
       } catch (error) {
         console.error("Error fetching product details:", error);
       } finally {

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../css/Login.css";
 import StoreIcon from "@mui/icons-material/Store";
 import { REGISTER_USER } from "../service/service";
 import Navbar from "react-bootstrap/Navbar";
-
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -79,11 +78,11 @@ const Signup = () => {
 
   return (
     <div className="container-fluid">
-       <Navbar.Brand href="/">
-      <h1 className="text-center" href="/">
-        <StoreIcon style={{ fontSize: 40, color: "purple" }} />
-        easyBuy
-      </h1>
+      <Navbar.Brand href="/">
+        <h1 className="text-center" href="/">
+          <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+          easyBuy
+        </h1>
       </Navbar.Brand>
       <div className="row mx-auto d-flex justify-content-center">
         <div className="col-sm-12 p-5 mx-auto" id="text">

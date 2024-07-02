@@ -51,10 +51,9 @@ const Header = () => {
     navigate("/");
   };
 
-  const handleOrderList = () =>{
+  const handleOrderList = () => {
     navigate("/orderlist");
-
-  }
+  };
 
   const handleLogin = () => {
     navigate("/login");
@@ -118,7 +117,7 @@ const Header = () => {
     }
   };
 
-  return (  
+  return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
@@ -152,56 +151,54 @@ const Header = () => {
             </div>
 
             <Nav className="ms-auto">
-  {user && (
-    <Nav.Link>
-      <h6 className="m-2">Welcome, {user.fullname}</h6>
-    </Nav.Link>
-  )}
+              {user && (
+                <Nav.Link>
+                  <h6 className="m-2">Welcome, {user.fullname}</h6>
+                </Nav.Link>
+              )}
 
-  <NavDropdown
-    title={
-      <AccountCircleIcon
-        style={{ fontSize: 32, color: "purple" }}
-      />
-    }
-    id="basic-nav-dropdown"
-  >
-    {user ? (
-      <>
-        <NavDropdown.Item onClick={handleShow}>
-          Profile
-        </NavDropdown.Item>
-        {user.role === "merchant" && (
-          <NavDropdown.Item onClick={handleAdmin}>
-          Merchant
-        </NavDropdown.Item>
-        )}
-         <NavDropdown.Item onClick={handleOrderList}>
-          Order list
-        </NavDropdown.Item>
-        <NavDropdown.Item onClick={handleLogout}>
-          Logout
-        </NavDropdown.Item>
-      </>
-    ) : (
-      <NavDropdown.Item onClick={handleLogin}>
-        Login
-      </NavDropdown.Item>
-    )}
-  </NavDropdown>
-</Nav>
+              <NavDropdown
+                title={
+                  <AccountCircleIcon
+                    style={{ fontSize: 32, color: "purple" }}
+                  />
+                }
+                id="basic-nav-dropdown"
+              >
+                {user ? (
+                  <>
+                    <NavDropdown.Item onClick={handleShow}>
+                      Profile
+                    </NavDropdown.Item>
+                    {user.role === "merchant" && (
+                      <NavDropdown.Item onClick={handleAdmin}>
+                        Merchant
+                      </NavDropdown.Item>
+                    )}
+                    <NavDropdown.Item onClick={handleOrderList}>
+                      Order list
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleLogout}>
+                      Logout
+                    </NavDropdown.Item>
+                  </>
+                ) : (
+                  <NavDropdown.Item onClick={handleLogin}>
+                    Login
+                  </NavDropdown.Item>
+                )}
+              </NavDropdown>
+            </Nav>
 
             <NavLink to="/cart" className="nav-link">
-                {user && cartItems ? (
-                  <Badge badgeContent={cartValue()} color="secondary">
-                    <ShoppingCartIcon
-                      style={{ fontSize: 32, color: "purple" }}
-                    />
-                  </Badge>
-                ) : (
+              {user && cartItems ? (
+                <Badge badgeContent={cartValue()} color="secondary">
                   <ShoppingCartIcon style={{ fontSize: 32, color: "purple" }} />
-                )}
-              </NavLink>
+                </Badge>
+              ) : (
+                <ShoppingCartIcon style={{ fontSize: 32, color: "purple" }} />
+              )}
+            </NavLink>
           </Navbar.Collapse>
         </Container>
       </Navbar>

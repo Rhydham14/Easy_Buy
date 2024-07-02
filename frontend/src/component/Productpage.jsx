@@ -24,15 +24,15 @@ const ProductPage = () => {
       WebkitBoxOrient: "vertical",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "normal", 
+      whiteSpace: "normal",
     },
     truncatedTitle: {
       display: "-webkit-box",
-      WebkitLineClamp: 2, 
+      WebkitLineClamp: 2,
       WebkitBoxOrient: "vertical",
       overflow: "hidden",
       textOverflow: "ellipsis",
-      whiteSpace: "normal", 
+      whiteSpace: "normal",
     },
   };
 
@@ -50,7 +50,7 @@ const ProductPage = () => {
       } catch (error) {
         setError(error.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -139,7 +139,7 @@ const ProductPage = () => {
         </Row>
         <Row className="justify-content-center">
           {filteredProducts.map((product, index) => (
-            <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4" >
+            <Col key={index} xs={12} sm={6} md={4} lg={3} className="mb-4">
               <Link
                 to={`/details/${product._id}`}
                 style={{ textDecoration: "none" }}

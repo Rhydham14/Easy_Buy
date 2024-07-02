@@ -14,13 +14,16 @@ import StripeProvider from "../src/component/StripeProvider";
 import PaymentSuccess from "../src/component/Success";
 import AllTransactions from "../src/component/AllTransaction";
 import OrderList from "./component/Oderlist";
+// import { useSelector } from "react-redux";
+// const islogin=useSelector(state=> state?.auth?.islogin);
 
 const App = () => (
-  <Router>
-    <StripeProvider>
+
+
+<Router>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" exact element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/details/:_id" element={<ProductDetails />} />
@@ -40,7 +43,6 @@ const App = () => (
         <Route path="AllTransactions" element={<AllTransactions/>}/>
         <Route path="/OrderList" element={<OrderList/>}/>
       </Routes>
-    </StripeProvider>
   </Router>
 );
 

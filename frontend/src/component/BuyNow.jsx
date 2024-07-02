@@ -5,7 +5,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import { PAYMENT, PAYMENT_DETAILS } from "../service/service";
 import { useDispatch } from "react-redux";
 import { buyProduct } from "../slice/cartSlice";
-import { Container, Row, Col, Form, Button, Alert, Spinner, Card } from 'react-bootstrap';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Alert,
+  Spinner,
+  Card,
+} from "react-bootstrap";
 
 const BuyNow = () => {
   const { totalPrice } = useParams();
@@ -44,20 +53,23 @@ const BuyNow = () => {
     event.preventDefault();
     setLoading(true);
 
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: fullName,
-          address: {
-            line1: address.street,
-            city: address.city,
-            state: address.state,
-            postal_code: address.pinCode,
+    const { error, paymentIntent } = await stripe.confirmCardPayment(
+      clientSecret,
+      {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: fullName,
+            address: {
+              line1: address.street,
+              city: address.city,
+              state: address.state,
+              postal_code: address.pinCode,
+            },
           },
         },
-      },
-    });
+      }
+    );
 
     if (error) {
       setError(error.message);
@@ -86,11 +98,16 @@ const BuyNow = () => {
   return (
     <Container fluid id="body">
       <Row className="justify-content-center">
-        <Col md={6} className="align-items-center justify-content-center mt-4 h-50">
+        <Col
+          md={6}
+          className="align-items-center justify-content-center mt-4 h-50"
+        >
           <Card id="card" className="h-100">
             <Card.Body>
               <h1 className="mb-4">Checkout</h1>
-              <h4 className="mb-4" style={{color:"green"}}>Total Price: ${totalPrice}</h4>
+              <h4 className="mb-4" style={{ color: "green" }}>
+                Total Price: ${totalPrice}
+              </h4>
               <Form onSubmit={handleSubmit}>
                 <h4>Personal Details</h4>
                 <Form.Group className="mb-3">
@@ -140,7 +157,7 @@ const BuyNow = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Pin Code</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="number"
                     placeholder="Enter your pin code"
                     name="pinCode"
                     value={address.pinCode}
@@ -148,7 +165,7 @@ const BuyNow = () => {
                     required
                   />
                 </Form.Group>
-                <hr/>
+                <hr />
                 <h4>Payment Details</h4>
                 <Form.Group className="mb-3">
                   <Form.Label>Card data</Form.Label>
@@ -156,11 +173,23 @@ const BuyNow = () => {
                     <CardElement />
                   </div>
                 </Form.Group>
-                <Button type="submit" style={{ backgroundColor: 'purple', color: 'white', borderColor: 'purple' }} disabled={!stripe || !elements || loading}>
+                <Button
+                  type="submit"
+                  style={{
+                    backgroundColor: "purple",
+                    color: "white",
+                    borderColor: "purple",
+                  }}
+                  disabled={!stripe || !elements || loading}
+                >
                   {loading ? <Spinner animation="border" size="sm" /> : "Pay"}
                 </Button>
               </Form>
-              {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
+              {error && (
+                <Alert variant="danger" className="mt-3">
+                  {error}
+                </Alert>
+              )}
             </Card.Body>
           </Card>
         </Col>

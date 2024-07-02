@@ -79,7 +79,6 @@ export const UPDATE_PRODUCT = async (productId, formData) => {
   }
 };
 
-
 export const REMOVE_PRODUCT_DATA = async (productId) => {
   const response = await axiosInstance.delete(
     `/easyBuy.com/api/product/removeProduct?_id=${productId}`,
@@ -163,12 +162,18 @@ export const PAYMENT = async (totalPrice) => {
   }
 };
 
-export const PAYMENT_DETAILS = async (paymentIntent, fullname, deliveryAddress) => {
+export const PAYMENT_DETAILS = async (
+  paymentIntent,
+  fullname,
+  deliveryAddress
+) => {
   try {
     const response = await axiosInstance.post(
       "/easyBuy.com/api/payment/paymentDetials",
       {
-        paymentIntent, fullname, deliveryAddress
+        paymentIntent,
+        fullname,
+        deliveryAddress,
       }
     );
     console.log("Payment saved", response.data);
@@ -191,26 +196,26 @@ export const SHOW_TRANSACTIONS = async () => {
   }
 };
 
-
 export const ORDER_LIST = async (productDetails) => {
-  console.log("oder frontend",productDetails);
+  console.log("oder frontend", productDetails);
   try {
-      const response = await axiosInstance.post(
-        "/easyBuy.com/api/orderlist/orderlist", productDetails
-      );
-      return response;
+    const response = await axiosInstance.post(
+      "/easyBuy.com/api/orderlist/orderlist",
+      productDetails
+    );
+    return response;
   } catch (error) {
     console.error("Failed to show transaction", error);
   }
 };
 
-export const ORDER_DATA = async() => {
-  try{
-    const response = await axiosInstance.get("/easyBuy.com/api/orderlist/orderlist");
-    return response
-  }catch(error){
+export const ORDER_DATA = async () => {
+  try {
+    const response = await axiosInstance.get(
+      "/easyBuy.com/api/orderlist/orderlist"
+    );
+    return response;
+  } catch (error) {
     console.error("Failed to show transaction", error);
-
   }
-}
-
+};

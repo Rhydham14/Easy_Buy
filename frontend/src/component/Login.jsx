@@ -35,11 +35,11 @@ const Login = () => {
 
   return (
     <div className="container-fluid">
-          <Navbar.Brand href="/">
-      <h1 className="text-center" href="/">
-        <StoreIcon style={{ fontSize: 40, color: "purple" }} />
-        easyBuy
-      </h1>
+      <Navbar.Brand href="/">
+        <h1 className="text-center" href="/">
+          <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+          easyBuy
+        </h1>
       </Navbar.Brand>
       <div className="row mx-auto d-flex justify-content-center">
         <div className="col-sm-12 p-5 mx-auto" id="text">
@@ -74,6 +74,7 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                autoComplete="off"
               />
             </div>
             {error && <div className="alert alert-danger">{error}</div>}
