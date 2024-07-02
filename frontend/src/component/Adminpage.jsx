@@ -197,11 +197,28 @@ const Admin = () => {
         }}
       >
         <Navbar.Brand href="/" style={{ fontSize: 30, color: "purple" }}>
-          <StoreIcon style={{ fontSize: 40, color: "purple" }} />
+        <StoreIcon sx={{ fontSize: { xs: 30, sm: 40 }, color: 'purple' }} />
+        <Typography
+          variant="h3"
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '2.125rem' },
+            color: 'purple',
+          }}
+        >
           easyBuy
-          <Typography variant="h3" align="center" color="black" gutterBottom>
-            Welcome Merchant
-          </Typography>
+        </Typography>
+        <Typography
+          variant="h4"
+          align="center"
+          sx={{
+            fontSize: { xs: '1.25rem', sm: '2rem' },
+            color: 'black',
+            mt: 1,
+          }}
+          gutterBottom
+        >
+          Welcome Merchant
+        </Typography>
         </Navbar.Brand>
 
         <Grid containe r spacing={4}>
