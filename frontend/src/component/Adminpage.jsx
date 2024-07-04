@@ -37,6 +37,7 @@ import {
 import "../css/Loader.css"; // Import loader CSS
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { Form } from "react-bootstrap";
 
 const Admin = () => {
   const user = useSelector((state) => state.auth.user);
@@ -56,6 +57,10 @@ const Admin = () => {
     category: "",
     image: null,
   });
+  const [showChat, setShowChat] = useState(false);
+
+  const handleChatShow = () => setShowChat(true);
+  const handleChatClose = () => setShowChat(false);
 
   const handleOpen = () => {
     setEditMode(false);
@@ -197,33 +202,33 @@ const Admin = () => {
         }}
       >
         <Navbar.Brand href="/" style={{ fontSize: 30, color: "purple" }}>
-        <StoreIcon sx={{ fontSize: { xs: 30, sm: 40 }, color: 'purple' }} />
-        <Typography
-          variant="h3"
-          sx={{
-            fontSize: { xs: '1.5rem', sm: '2.125rem' },
-            color: 'purple',
-          }}
-        >
-          easyBuy
-        </Typography>
-        <Typography
-          variant="h4"
-          align="center"
-          sx={{
-            fontSize: { xs: '1.25rem', sm: '2rem' },
-            color: 'black',
-            mt: 1,
-          }}
-          gutterBottom
-        >
-          Welcome Merchant
-        </Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: "1.5rem", sm: "2.125rem" },
+              color: "purple",
+            }}
+          >
+            <StoreIcon sx={{ fontSize: { xs: 30, sm: 40 }, color: "purple" }} />
+            easyBuy
+          </Typography>
+          <Typography
+            variant="h4"
+            align="center"
+            sx={{
+              fontSize: { xs: "1.25rem", sm: "2rem" },
+              color: "black",
+              mt: 1,
+            }}
+            gutterBottom
+          >
+            Welcome Merchant
+          </Typography>
         </Navbar.Brand>
 
         <Grid containe r spacing={4}>
           <Grid item xs={12}>
-            <Typography variant="h3">Your Profile</Typography>
+            <Typography variant="h5">Your Profile</Typography>
             <Paper sx={{ maxHeight: 400, overflow: "auto" }}>
               <Card>
                 <CardHeader title={user.fullname} />
@@ -236,17 +241,34 @@ const Admin = () => {
 
           <Button
             variant="contained"
-
-            sx={{ mb: 2, mt:2, backgroundColor: "purple", float:'right' }}
+            sx={{ mb: 2, mt: 2, backgroundColor: "purple", float: "right" }}
           >
-            <Link to="/AllTransactions" style={{ color:"white", textDecoration:"none"}}>
+            <Link
+              to="/AllTransactions"
+              style={{ color: "white", textDecoration: "none" }}
+            >
               All Transactions
             </Link>
           </Button>
+          <Button
+            variant="contained"
+            style={{
+              marginBottom: "16px",
+              marginTop: "16px",
+              marginRight: "16px",
+              backgroundColor: "purple",
+              float: "right",
+              color: "white",
+              textDecoration: "none",
+              borderRadius: "15px 15px 0px 15px",
+            }}
+            onClick={handleChatShow}
+          >
+            Query Request
+          </Button>
           <Grid item xs={12}>
-     
-            <Typography variant="h3">Product Details</Typography>
-            
+            <Typography variant="h4">Product Details</Typography>
+
             <Button
               variant="contained"
               sx={{ mb: 2, backgroundColor: "purple", color: "white" }}
@@ -457,6 +479,45 @@ const Admin = () => {
           </DialogActions>
         </Dialog>
       </Container>
+
+      <Dialog
+        open={showChat}
+        onClose={handleChatClose}
+        PaperProps={{
+          sx: {
+            width: "80%", // Set desired width
+            height: "80%", // Set desired height
+            maxWidth: "none", // Override maxWidth for more control
+          },
+        }}
+      >
+        <DialogTitle style={{ color: "purple" }}>Chat</DialogTitle>
+        <DialogContent>
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Messages you get...</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your message"
+                className="mt-5"
+              />
+            </Form.Group>
+          </Form>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            type="submit"
+            style={{ backgroundColor: "purple" }}
+            className="text-white"
+          >
+            Send
+          </Button>
+          <Button onClick={handleChatClose} className="bg-dark text-white">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

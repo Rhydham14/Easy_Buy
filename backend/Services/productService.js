@@ -1,4 +1,4 @@
-const { PassThrough } = require("nodemailer/lib/xoauth2");
+// const { PassThrough } = require("nodemailer/lib/xoauth2");
 const ProductModel = require("../Models/productModel");
 const addProduct = async ({ title, description, price, category, images }) => {
   try {
